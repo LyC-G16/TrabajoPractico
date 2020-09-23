@@ -12,9 +12,53 @@ int yyerror(void);
 %option noyywrap
 %option yylineno
 
-LETRA [a-zA-z]
+LETRA [a-zA-Z]
 DIGITO [0-9]
 
+ID        {LETRA}({LETRA}|{DIGITO})*
+COMA      ","
+PYC       ";"
+ASIG      ":"
+
+DECVAR    "DIM"
+DEFTIPO   "AS"
+IMPR      "PUT"
+LEER      "GET"
+INTEGER   "Integer"
+FLOAT     "Float"
+
+CONSCAD   ["].{30}["]
+CONSENT   [-]?[0-9]+
+CONSREAL  [-]?{DIGITO}*[.]{DIGITO}*
+CONSHEXA  
+CONSOCT   
+CONSBIN    
+FN        
+
+SUMA      "+"
+MENOS     "-"
+DIV       "/"
+MULT      "*"
+
+WHILE     "while"
+SI        "if"
+SINO      "else"
+
+PARA      "("
+PARC      ")"
+LLAVA     "{"
+LLAVC     "}"
+CORCA     "<"
+CORCC     ">"
+
+DIST      "<>"
+MENIG     "<="
+MAYIG     ">="
+
+Y         "and"
+O         "or"
+
+DECVAR
 WRITE "write"
 WHILE "while"
 DECVAR "DECVAR"
