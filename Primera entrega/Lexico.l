@@ -31,7 +31,6 @@ CONSCAD   ["].{30}["]
 CONSENT   [-]?[0-9]+
 CONSREAL  [-]?{DIGITO}*[.]{DIGITO}*
 CONSHEXA  0[xX][0-9a-fA-F]{1,4}
-CONSOCT   
 CONSBIN   0[bB][0-1]{1,16}
 
 SUMA      "+"
@@ -60,53 +59,49 @@ Y         "and"
 O         "or"
 
 %%
-LETRA     {print("LETRA: %s\n", yytext);}
-DIGITO      {print("DIGITO: %s\n", yytext);}
 
-ID      {print("ID: %s\n", yytext);}
-COMA      {print("COMA: %s\n", yytext);}
-PYC     {print("PYC: %s\n", yytext);}
-ASIG      {print("ASIG: %s\n", yytext);}
+{DECVAR}      {printf("DECVAR: %s\n", yytext);}
+{DEFTIPO}     {printf("DEFTIPO: %s\n", yytext);}
+{IMPR}      {printf("IMPR: %s\n", yytext);}
+{LEER}      {printf("LEER: %s\n", yytext);}
+{INTEGER}     {printf("INTEGER: %s\n", yytext);}
+{FLOAT}     {printf("FLOAT: %s\n", yytext);}
 
-DECVAR      {print("DECVAR: %s\n", yytext);}
-DEFTIPO     {print("DEFTIPO: %s\n", yytext);}
-IMPR      {print("IMPR: %s\n", yytext);}
-LEER      {print("LEER: %s\n", yytext);}
-INTEGER     {print("INTEGER: %s\n", yytext);}
-FLOAT     {print("FLOAT: %s\n", yytext);}
+{WHILE}     {printf("WHILE: %s\n", yytext);}
+{SI}      {printf("SI: %s\n", yytext);}
+{SINO}      {printf("SINO: %s\n", yytext);}
 
-CONSCAD     {print("CONSCAD: %s\n", yytext);}
-CONSENT     {print("CONSENT: %s\n", yytext);}
-CONSREAL      {print("CONSREAL: %s\n", yytext);}
-CONSHEXA      {print("CONSHEXA: %s\n", yytext);}
-CONSOCT     {print("CONSOCT: %s\n", yytext);}
-CONSBIN     {print("CONSBIN: %s\n", yytext);}
-FN      {print("FN: %s\n", yytext);}
+{Y}     {printf("Y: %s\n", yytext);}
+{O}     {printf("O: %s\n", yytext);}
 
-SUMA      {print("SUMA: %s\n", yytext);}
-MENOS     {print("MENOS: %s\n", yytext);}
-DIV     {print("DIV: %s\n", yytext);}
-MULT      {print("MULT: %s\n", yytext);}
+{ID}      {printf("ID: %s\n", yytext);}
+{COMA}      {printf("COMA: %s\n", yytext);}
+{PYC}     {printf("PYC: %s\n", yytext);}
+{ASIG}      {printf("ASIG: %s\n", yytext);}
 
-WHILE     {print("WHILE: %s\n", yytext);}
-SI      {print("SI: %s\n", yytext);}
-SINO      {print("SINO: %s\n", yytext);}
+{CONSCAD}     {printf("CONSCAD: %s\n", yytext);}
+{CONSENT}     {printf("CONSENT: %s\n", yytext);}
+{CONSREAL}      {printf("CONSREAL: %s\n", yytext);}
+{CONSHEXA}      {printf("CONSHEXA: %s\n", yytext);}
+{CONSBIN}     {printf("CONSBIN: %s\n", yytext);}
 
-PARA      {print("PARA: %s\n", yytext);}
-PARC      {print("PARC: %s\n", yytext);}
-LLAVA     {print("LLAVA: %s\n", yytext);}
-LLAVC     {print("LLAVC: %s\n", yytext);}
-CORCA     {print("CORCA: %s\n", yytext);}
-CORCC     {print("CORCC: %s\n", yytext);}
+{SUMA}      {printf("SUMA: %s\n", yytext);}
+{MENOS}     {printf("MENOS: %s\n", yytext);}
+{DIV}     {printf("DIV: %s\n", yytext);}
+{MULT}      {printf("MULT: %s\n", yytext);}
 
-DIST      {print("DIST: %s\n", yytext);}
-MENIG     {print("MENIG: %s\n", yytext);}
-MAYIG     {print("MAYIG: %s\n", yytext);}
-NO_IG     {print("NO_IG: %s\n", yytext);}
-IG      {print("IG: %s\n", yytext);}
+{PARA}      {printf("PARA: %s\n", yytext);}
+{PARC}      {printf("PARC: %s\n", yytext);}
+{LLAVA}     {printf("LLAVA: %s\n", yytext);}
+{LLAVC}     {printf("LLAVC: %s\n", yytext);}
+{CORCA}     {printf("CORCA: %s\n", yytext);}
+{CORCC}     {printf("CORCC: %s\n", yytext);}
 
-Y     {print("Y: %s\n", yytext);}
-O     {print("O: %s\n", yytext);}
+{DIST}      {printf("DIST: %s\n", yytext);}
+{MENIG}     {printf("MENIG: %s\n", yytext);}
+{MAYIG}     {printf("MAYIG: %s\n", yytext);}
+{NO_IG}     {printf("NO_IG: %s\n", yytext);}
+{IG}      {printf("IG: %s\n", yytext);}
 
 "\t"
 "\n"
