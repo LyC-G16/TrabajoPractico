@@ -30,10 +30,9 @@ FLOAT     "Float"
 CONSCAD   ["].{30}["]
 CONSENT   [-]?[0-9]+
 CONSREAL  [-]?{DIGITO}*[.]{DIGITO}*
-CONSHEXA  
+CONSHEXA  0[xX][0-9a-fA-F]{1,4}
 CONSOCT   
-CONSBIN    
-FN        
+CONSBIN   0[bB][0-1]{1,16}
 
 SUMA      "+"
 MENOS     "-"
