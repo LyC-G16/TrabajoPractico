@@ -1,11 +1,15 @@
 maximo -> máximo
+ignorar acentos? pincha porque está mal escrita la función?
+
 key sensitive
 octal (0o250) -> esta bien? 
 pivot -> no esta declarada
 
-ASIGNACIONES
-Asignaciones simples A:=B
-
-hacer un toque un token funcion o dejarlo como id y en en el analizador sintactico resolverlo en ese momento
+hacer un token funcion o dejarlo como token id + token parentesis y en en el analizador sintactico resolverlo en ese momento
 
 PUT “no es mayor que 2” -> las comillas estan hechas a proposito?
+
+está bien el else con dos llaves cerradas?
+else }
+
+}
