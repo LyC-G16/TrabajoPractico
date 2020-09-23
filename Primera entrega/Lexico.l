@@ -53,71 +53,60 @@ CORCC     ">"
 DIST      "<>"
 MENIG     "<="
 MAYIG     ">="
+NO_IG     "!="
+IG        "=="
 
 Y         "and"
 O         "or"
 
-DECVAR
-WRITE "write"
-WHILE "while"
-DECVAR "DECVAR"
-END "ENDDEC"
-ELSE "else"
-FLOAT "Float"
-INTEGER "Integer"
-IF "if"
-ENTERO ["-"]?{DIGITO}*
-N_FLOTANTE ["-"]?{DIGITO}+["."]{DIGITO}+
-OP_AS ":"
-COMA ","
-PYC ";"
-ID {LETRA}({LETRA}|{DIGITO})*
-STRING ["].*["]
-PAR_A "("
-PAR_C ")"
-LLA_A "{"
-LLA_C "}"
-OP_SUM "+"
-DIV "/"
-MULT "*"
-LEQ "<""="
-HIGHER ">"
-LESS "<"
-HEQ ">="
-NOT_EQ "!="
-COMP "=="
-
 %%
-{WRITE} {printf("WRITE: %s\n", yytext);}
-{FLOAT} {printf("FLOAT: %s\n", yytext);}
-{N_FLOTANTE} {printf("N_FLOTANTE: %s\n", yytext);}
-{INTEGER} {printf("INTEGER: %s\n", yytext);}
-{IF} {printf("IF: %s\n", yytext);}
-{DECVAR} {printf("DECVAR: %s\n", yytext);}
-{END} {printf("END: %s\n", yytext);}
-{WHILE} {printf("WHILE: %s\n", yytext);}
-{ID} {printf("ID: %s\n", yytext);}
-{COMA} {printf("COMA: %s\n", yytext);}
-{PYC} {printf("PYC: %s\n", yytext);}
-{OP_AS} {printf("OP_AS: %s\n", yytext);}
-{OP_SUM} {printf("OP_SUM: %s\n", yytext);}
-{PAR_A} {printf("PAR_A: %s\n", yytext);}
-{PAR_C} {printf("PAR_C: %s\n", yytext);}
-{OP_AS} {printf("OP_AS: %s\n", yytext);}
-{LLA_A} {printf("LLA_A: %s\n", yytext);}
-{LLA_C} {printf("LLA_C: %s\n", yytext);}
-{DIV} {printf("DIV: %s\n", yytext);}
-{MULT} {printf("MULT: %s\n", yytext);}
-{LEQ} {printf("LEQ: %s\n", yytext);}
-{HIGHER} {printf("HIGHER: %s\n", yytext);}
-{HEQ} {printf("HEQ: %s\n", yytext);}
-{NOT_EQ} {printf("NOT_EQ: %s\n", yytext);}
-{COMP} {printf("COMP: %s\n", yytext);}
-{ELSE} {printf("ELSE: %s\n", yytext);}
-{ENTERO} {printf("ENTERO: %s\n", yytext);}
-{N_FLOTANTE} {printf("N_FLOTANTE: %s\n", yytext);}
-{LESS} {printf("LESS: %s\n", yytext);}
-{STRING} {printf("STRING: %s\n", yytext);}
+LETRA     {print("LETRA: %s\n", yytext);}
+DIGITO      {print("DIGITO: %s\n", yytext);}
+
+ID      {print("ID: %s\n", yytext);}
+COMA      {print("COMA: %s\n", yytext);}
+PYC     {print("PYC: %s\n", yytext);}
+ASIG      {print("ASIG: %s\n", yytext);}
+
+DECVAR      {print("DECVAR: %s\n", yytext);}
+DEFTIPO     {print("DEFTIPO: %s\n", yytext);}
+IMPR      {print("IMPR: %s\n", yytext);}
+LEER      {print("LEER: %s\n", yytext);}
+INTEGER     {print("INTEGER: %s\n", yytext);}
+FLOAT     {print("FLOAT: %s\n", yytext);}
+
+CONSCAD     {print("CONSCAD: %s\n", yytext);}
+CONSENT     {print("CONSENT: %s\n", yytext);}
+CONSREAL      {print("CONSREAL: %s\n", yytext);}
+CONSHEXA      {print("CONSHEXA: %s\n", yytext);}
+CONSOCT     {print("CONSOCT: %s\n", yytext);}
+CONSBIN     {print("CONSBIN: %s\n", yytext);}
+FN      {print("FN: %s\n", yytext);}
+
+SUMA      {print("SUMA: %s\n", yytext);}
+MENOS     {print("MENOS: %s\n", yytext);}
+DIV     {print("DIV: %s\n", yytext);}
+MULT      {print("MULT: %s\n", yytext);}
+
+WHILE     {print("WHILE: %s\n", yytext);}
+SI      {print("SI: %s\n", yytext);}
+SINO      {print("SINO: %s\n", yytext);}
+
+PARA      {print("PARA: %s\n", yytext);}
+PARC      {print("PARC: %s\n", yytext);}
+LLAVA     {print("LLAVA: %s\n", yytext);}
+LLAVC     {print("LLAVC: %s\n", yytext);}
+CORCA     {print("CORCA: %s\n", yytext);}
+CORCC     {print("CORCC: %s\n", yytext);}
+
+DIST      {print("DIST: %s\n", yytext);}
+MENIG     {print("MENIG: %s\n", yytext);}
+MAYIG     {print("MAYIG: %s\n", yytext);}
+NO_IG     {print("NO_IG: %s\n", yytext);}
+IG      {print("IG: %s\n", yytext);}
+
+Y     {print("Y: %s\n", yytext);}
+O     {print("O: %s\n", yytext);}
 
 "\t"
 "\n"
