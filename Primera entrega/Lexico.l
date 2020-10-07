@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <y.tab.h>
 
 FILE *yyin; // funcion que hace el analisis.
 int yylvan; //Variable reservada que interactua con el analizador lexico
