@@ -1,1 +1,1 @@
-DIM <contador> AS <Integer>
+DIM <contador, acumulador> AS <Integer, Float>

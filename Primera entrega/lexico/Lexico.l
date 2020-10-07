@@ -1,7 +1,7 @@
 %{
   #include <stdio.h>
   #include <stdlib.h>
-  #include <y.tab.h>
+  #include "y.tab.h"
 
   FILE *yyin; // funcion que hace el analisis.
   int yylvan; //Variable reservada que interactua con el analizador lexico
@@ -61,48 +61,48 @@ O         "or"
 
 %%
 
-{DECVAR}      {printf("DECVAR: %s\n", yytext);}
-{DEFTIPO}     {printf("DEFTIPO: %s\n", yytext);}
-{IMPR}      {printf("IMPR: %s\n", yytext);}
-{LEER}      {printf("LEER: %s\n", yytext);}
-{INTEGER}     {printf("INTEGER: %s\n", yytext);}
-{FLOAT}     {printf("FLOAT: %s\n", yytext);}
+{DECVAR}      {printf("DECVAR: %s\n", yytext); return DECVAR;}
+{DEFTIPO}     {printf("DEFTIPO: %s\n", yytext); return DEFTIPO;}
+{IMPR}      {printf("IMPR: %s\n", yytext); return IMPR;}
+{LEER}      {printf("LEER: %s\n", yytext); return LEER;}
+{INTEGER}     {printf("INTEGER: %s\n", yytext); return INTEGER;}
+{FLOAT}     {printf("FLOAT: %s\n", yytext); return FLOAT;}
 
-{WHILE}     {printf("WHILE: %s\n", yytext);}
-{SI}      {printf("SI: %s\n", yytext);}
-{SINO}      {printf("SINO: %s\n", yytext);}
+{WHILE}     {printf("WHILE: %s\n", yytext); return WHILE;}
+{SI}      {printf("SI: %s\n", yytext); return SI;}
+{SINO}      {printf("SINO: %s\n", yytext); return SINO;}
 
-{Y}     {printf("Y: %s\n", yytext);}
-{O}     {printf("O: %s\n", yytext);}
+{Y}     {printf("Y: %s\n", yytext); return Y;}
+{O}     {printf("O: %s\n", yytext); return O;}
 
-{ID}      {printf("ID: %s\n", yytext);}
-{COMA}      {printf("COMA: %s\n", yytext);}
-{PYC}     {printf("PYC: %s\n", yytext);}
-{ASIG}      {printf("ASIG: %s\n", yytext);}
+{ID}      {printf("ID: %s\n", yytext); return ID;}
+{COMA}      {printf("COMA: %s\n", yytext); return COMA;}
+{PYC}     {printf("PYC: %s\n", yytext); return PYC;}
+{ASIG}      {printf("ASIG: %s\n", yytext); return ASIG;}
 
-{CONSCAD}     {printf("CONSCAD: %s\n", yytext);}
-{CONSENT}     {printf("CONSENT: %s\n", yytext);}
-{CONSREAL}      {printf("CONSREAL: %s\n", yytext);}
-{CONSHEXA}      {printf("CONSHEXA: %s\n", yytext);}
-{CONSBIN}     {printf("CONSBIN: %s\n", yytext);}
+{CONSCAD}     {printf("CONSCAD: %s\n", yytext); return CONSCAD;}
+{CONSENT}     {printf("CONSENT: %s\n", yytext); return CONSENT;}
+{CONSREAL}      {printf("CONSREAL: %s\n", yytext); return CONSREAL;}
+{CONSHEXA}      {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
+{CONSBIN}     {printf("CONSBIN: %s\n", yytext); return CONSBIN;}
 
-{SUMA}      {printf("SUMA: %s\n", yytext);}
-{MENOS}     {printf("MENOS: %s\n", yytext);}
-{DIV}     {printf("DIV: %s\n", yytext);}
-{MULT}      {printf("MULT: %s\n", yytext);}
+{SUMA}      {printf("SUMA: %s\n", yytext); return SUMA;}
+{MENOS}     {printf("MENOS: %s\n", yytext); return MENOS;}
+{DIV}     {printf("DIV: %s\n", yytext); return DIV;}
+{MULT}      {printf("MULT: %s\n", yytext); return MULT;}
 
-{PARA}      {printf("PARA: %s\n", yytext);}
-{PARC}      {printf("PARC: %s\n", yytext);}
-{LLAVA}     {printf("LLAVA: %s\n", yytext);}
-{LLAVC}     {printf("LLAVC: %s\n", yytext);}
-{CORCA}     {printf("CORCA: %s\n", yytext);}
-{CORCC}     {printf("CORCC: %s\n", yytext);}
+{PARA}      {printf("PARA: %s\n", yytext); return PARA;}
+{PARC}      {printf("PARC: %s\n", yytext); return PARC;}
+{LLAVA}     {printf("LLAVA: %s\n", yytext); return LLAVA;}
+{LLAVC}     {printf("LLAVC: %s\n", yytext); return LLAVC;}
+{CORCA}     {printf("CORCA: %s\n", yytext); return CORCA;}
+{CORCC}     {printf("CORCC: %s\n", yytext); return CORCC;}
 
-{DIST}      {printf("DIST: %s\n", yytext);}
-{MENIG}     {printf("MENIG: %s\n", yytext);}
-{MAYIG}     {printf("MAYIG: %s\n", yytext);}
-{NO_IG}     {printf("NO_IG: %s\n", yytext);}
-{IG}      {printf("IG: %s\n", yytext);}
+{DIST}      {printf("DIST: %s\n", yytext); return DIST;}
+{MENIG}     {printf("MENIG: %s\n", yytext); return MENIG;}
+{MAYIG}     {printf("MAYIG: %s\n", yytext); return MAYIG;}
+{NO_IG}     {printf("NO_IG: %s\n", yytext); return NO_IG;}
+{IG}      {printf("IG: %s\n", yytext); return IG;}
 
 "\t"
 "\n"
@@ -112,16 +112,3 @@ O         "or"
 .   yyerror();
 %%
 
-int main(int argc, char* argv[])
-{
-    if((yyin = fopen(argv[1], "rt")) == NULL){
-        printf("\nNo se logro abrir el archivo: %s\n", argv[1]);
-        return 1;
-    }
-    yylex();
-    fclose(yyin);
-}
-
-int yyerror(void){
-   printf("Caracter no valido: %s\n", yytext);
-}

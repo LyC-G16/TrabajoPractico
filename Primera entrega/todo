@@ -1,0 +1,5 @@
+[x] archivo flex que se llamará Lexico.l
+[-] archivo bison que se llamará Sintactico.y
+[ ] archivo ejecutable que se llamará Primera.exe
+[x] archivo prueba.txt provisto por la cátedra según el tema asignado
+[ ] archivo con la tabla de símbolos ts.txt

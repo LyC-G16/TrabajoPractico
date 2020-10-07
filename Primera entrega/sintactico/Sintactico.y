@@ -1,12 +1,12 @@
 %{
   #include <stdio.h>
   #include <stdlib.h>
-  #include <y.tab.h>
+  #include "y.tab.h"
 
   int yystopparser = 0;
   FILE *yyin;
 
-  int error();
+  int yyerror();
   int yylex();
 %}
 
@@ -57,32 +57,36 @@
 %token O
 
 %%
-
-//Aca van las reglas
 declaracion:
-  DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC;
-
+  DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC { printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); };
 variables:
-  variables COMA ID |
-  ID;
-
+  variables COMA ID { printf("\t{variables COMA ID} es variables\n"); } |
+  ID { printf("\t{ID} es variables\n"); };
 tipos:
-  tipos COMA INTEGER |
-  tipos COMA FLOAT |
-  INTEGER |
-  FLOAT;
+  tipos COMA INTEGER { printf("\t{tipos COMA INTEGER} es tipos\n"); } |
+  tipos COMA FLOAT { printf("\t{tipos COMA FLOAT} es tipos\n"); } |
+  INTEGER { printf("\t{INTEGER} es tipos\n"); } |
+  FLOAT { printf("\t{FLOAT} es tipos\n"); };
 
 %%
 
 int main(int argc, char *argv[])
 {
   if(( yyin = fopen(argv[1], "rt")) == NULL)
+  {
     printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
+  }
   else
+  {
     yyparse();
+  }
 
   fclose(yyin);
   return 0;
-  fclose(yyin);
-  return 0;
-}  
+}
+
+int yyerror(void)
+{
+  printf("Error sintáctico\n");
+  exit(1);
+}
