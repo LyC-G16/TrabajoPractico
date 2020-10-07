@@ -1,0 +1,1 @@
+DIM <contador> AS <Integer>
