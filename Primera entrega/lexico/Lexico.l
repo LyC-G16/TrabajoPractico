@@ -30,7 +30,7 @@ LEER      "GET"
 INTEGER   "Integer"
 FLOAT     "Float"
 
-CONSCAD   ["].*{30}["]
+CONSCAD   ["].{1,30}["]
 CONSENT   [-]?[0-9]+
 CONSREAL  [-]?({DIGITO}+[.]{DIGITO}*)|({DIGITO}*[.]{DIGITO}+)
 CONSHEXA  0[xX][0-9a-fA-F]{1,4}
