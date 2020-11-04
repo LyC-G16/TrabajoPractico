@@ -89,6 +89,7 @@
 %type <expression> factor
 %type <expression> expresion
 %type <expression> termino
+%type <expression> tipo
 %type <expression> tipos
 %type <expression> impresion
 %type <expression> declaracion
@@ -96,9 +97,11 @@
 %type <expression> asignacion
 %type <expression> mientras
 %type <expression> decision
+%type <expression> variable
 %type <expression> variables
 %type <expression> sentencia
 %type <expression> programa
+
 
 %%
 programaPrima:
@@ -124,14 +127,19 @@ declaracion:
   DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC { printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); };
 
 variables:
-  variables COMA ID { printf("\t{variables COMA ID} es variables\n"); } |
-  ID { $$ = crearHoja(yytext); printf("\t{ID} es variables\n"); };
+  variables COMA variable { printf("\t{variables COMA variable} es variables\n"); }|
+  variable { printf("\t{variable} es variables\n"); };
+
+variable:
+  ID { $$ = crearHoja(yytext); printf("\t{ID} es variable\n"); };
 
 tipos:
-  tipos COMA INTEGER { printf("\t{tipos COMA INTEGER} es tipos\n"); } |
-  tipos COMA FLOAT { printf("\t{tipos COMA FLOAT} es tipos\n"); } |
-  INTEGER { $$ = crearHoja(yytext); printf("\t{INTEGER} es tipos\n"); } |
-  FLOAT { $$ = crearHoja(yytext); printf("\t{FLOAT} es tipos\n"); };
+  tipos COMA tipo { printf("\t{tipos COMA tipo} es tipos\n"); }|
+  tipo { printf("\t{tipo} es tipos\n"); };
+
+tipo:
+  INTEGER { $$ = crearHoja(yytext); printf("\t{INTEGER} es tipo\n"); } |
+  FLOAT { $$ = crearHoja(yytext); printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
   IMPR CONSCAD PYC { $$ = crearNodo(eESCRIBIR, crearHoja($2), NULL); printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
@@ -263,7 +271,7 @@ int main(int argc, char *argv[])
   {
     SExpression *expression;
     yyparse(&expression);
-    write_graphviz(expression);
+    //write_graphviz(expression);
   }
 
   fclose(yyin);
