@@ -35,6 +35,7 @@
   EOperationType condicional;
 
   char nameID[30];
+  char stringFormateado[33];
 %}
 
 %parse-param { SExpression **expression }
@@ -124,8 +125,8 @@ programa:
 
 sentencia:
   impresion { pSentencia = pImpresion; $$ = pSentencia; printf("\t{impresion} es sentencia\n"); } |
-  declaracion { $$ = $1; printf("\t{declaracion} es sentencia\n"); } |
-  lectura { $$ = $1; printf("\t{lectura} es sentencia\n"); } |
+  declaracion { pSentencia = pDeclaracion; $$ = pSentencia; printf("\t{declaracion} es sentencia\n"); } |
+  lectura { pSentencia = pLectura; $$ = pSentencia; printf("\t{lectura} es sentencia\n"); } |
   asignacion { pSentencia = pAsignacion; $$ = pSentencia; printf("\t{asignacion} es sentencia\n"); } |
   mientras { pSentencia = pMientras; $$ = pSentencia; printf("\t{mientras} es sentencia\n"); } |
   decision {pSentencia = pDecision; $$ = pSentencia; printf("\t{decision} es sentencia\n"); };
@@ -149,11 +150,11 @@ tipo:
   FLOAT { $$ = crearHoja(yytext); printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
-  IMPR CONSCAD {strcpy(nameID, formatearString(yytext));} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(nameID), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
+  IMPR CONSCAD {formatearString(yytext, stringFormateado);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
   //| IMPR expresion PYC { $$ = crearNodo(eESCRIBIR, crearNodo($2), NULL); printf("\t{IMPR expresion PYC} es impresion\n"); };
 
 lectura:
-  LEER ID PYC { $$ = crearNodo(eLEER, crearHoja($2), NULL); printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
+  LEER ID {strcpy(nameID, yytext);} PYC { pLectura = crearNodo(eLEER, crearHoja(nameID), NULL); $$ = pLectura; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
 
 asignacion:
   ID {strcpy(nameID, yytext);} ASIG expresion PYC{ pAsignacion = crearNodo(eASIGNACION, crearHoja(nameID), pExpresion);$$=pAsignacion; printf("\t{ID ASIG expresion} es asignacion\n"); };
@@ -263,6 +264,9 @@ char* node_name(SExpression *e){
     return name;
   case eESCRIBIR:
     sprintf(name, "PUT");
+    return name;
+  case eLEER:
+    sprintf(name, "GET");
     return name;
   case ePROGRAMA:
     sprintf(name, "PROGRAMA");

@@ -64,6 +64,5 @@ SExpression *crearNodo(EOperationType type,
  */
 void deleteExpression(SExpression *b);
 EOperationType convertirLexemaEnOperacion(char *);
-char *formatearString(char *);
-char *replaceWord(const char *, const char *, const char *);
+void formatearString(char *, char *);
 #endif // __EXPRESSION_H__

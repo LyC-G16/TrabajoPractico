@@ -1,5 +1,6 @@
 if (actual > 0b10) {
     PUT "no es mayor que 2";
+    GET actual;
 } else {
     aux: 3 + 1;    
 }
