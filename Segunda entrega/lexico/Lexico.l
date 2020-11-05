@@ -1,5 +1,6 @@
 %{
   #include "expression.h"
+  #include "Primitivas.h"
   #include <stdio.h>
   #include <stdlib.h>
   #include "y.tab.h"
@@ -56,7 +57,6 @@ CORCC     ">"
 DIST      "<>"
 MENIG     "<="
 MAYIG     ">="
-NO_IG     "!="
 IG        "=="
 
 Y         "and"
@@ -106,7 +106,6 @@ O         "or"
 {DIST}      {printf("DIST: %s\n", yytext); return DIST;}
 {MENIG}     {printf("MENIG: %s\n", yytext); return MENIG;}
 {MAYIG}     {printf("MAYIG: %s\n", yytext); return MAYIG;}
-{NO_IG}     {printf("NO_IG: %s\n", yytext); return NO_IG;}
 {IG}      {printf("IG: %s\n", yytext); return IG;}
 
 "\t"

@@ -11,6 +11,12 @@
 typedef enum tagEOperationType
 {
   eVALUE,
+  eMAYOR,
+  eMENOR,
+  eIGUAL,
+  eDISTINTO,
+  eMAYORIGUAL,
+  eMENORIGUAL,
   eMULTIPLICACION,
   eDIVISION,
   eSUMA,
@@ -18,6 +24,9 @@ typedef enum tagEOperationType
   eASIGNACION,
   eLEER,
   eESCRIBIR,
+  eMIENTRAS,
+  eDECISION,
+  eDECISIONCUERPO,
   ePROGRAMA
 } EOperationType;
 
@@ -54,5 +63,7 @@ SExpression *crearNodo(EOperationType type,
  * @param b The expression
  */
 void deleteExpression(SExpression *b);
-
+EOperationType convertirLexemaEnOperacion(char *);
+char *formatearString(char *);
+char *replaceWord(const char *, const char *, const char *);
 #endif // __EXPRESSION_H__

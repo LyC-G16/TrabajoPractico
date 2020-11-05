@@ -1,5 +1,6 @@
 %{
   #include "expression.h"
+  #include "Primitivas.h"
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
@@ -22,11 +23,16 @@
   SExpression* pDeclaracion;
   SExpression* pLectura;
   SExpression* pAsignacion;
+  SExpression* pCondicion;
+  SExpression* pCondiciones;
   SExpression* pMientras;
   SExpression* pDecision;
   SExpression* pVariables;
   SExpression* pSentencia;
   SExpression* pPrograma;
+  SExpression* pAux;
+
+  EOperationType condicional;
 
   char nameID[30];
 %}
@@ -75,7 +81,6 @@
 %token DIST
 %token MENIG
 %token MAYIG
-%token NO_IG
 %token IG
 
 %token Y
@@ -95,6 +100,8 @@
 %type <expression> declaracion
 %type <expression> lectura
 %type <expression> asignacion
+%type <expression> condicion
+%type <expression> condiciones
 %type <expression> mientras
 %type <expression> decision
 %type <expression> variable
@@ -113,15 +120,15 @@ programaPrima:
 
 programa: 
   sentencia { pPrograma = pSentencia; $$ = pPrograma; printf("\t{sentencia} es programa\n"); } 
-  | programa sentencia { $$ = crearNodo(ePROGRAMA, $1, $2); printf("\t{programa sentencia} es programa\n");};
+  | programa sentencia { pPrograma = crearNodo(ePROGRAMA, $1, pSentencia);$$ = pPrograma; printf("\t{programa sentencia} es programa\n");};
 
 sentencia:
-  impresion { $$ = $1; printf("\t{impresion} es sentencia\n"); } |
+  impresion { pSentencia = pImpresion; $$ = pSentencia; printf("\t{impresion} es sentencia\n"); } |
   declaracion { $$ = $1; printf("\t{declaracion} es sentencia\n"); } |
   lectura { $$ = $1; printf("\t{lectura} es sentencia\n"); } |
   asignacion { pSentencia = pAsignacion; $$ = pSentencia; printf("\t{asignacion} es sentencia\n"); } |
-  mientras { $$ = $1; printf("\t{mientras} es sentencia\n"); } |
-  decision { $$ = $1; printf("\t{decision} es sentencia\n"); };
+  mientras { pSentencia = pMientras; $$ = pSentencia; printf("\t{mientras} es sentencia\n"); } |
+  decision {pSentencia = pDecision; $$ = pSentencia; printf("\t{decision} es sentencia\n"); };
   
 declaracion:
   DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC { printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); };
@@ -142,7 +149,7 @@ tipo:
   FLOAT { $$ = crearHoja(yytext); printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
-  IMPR CONSCAD PYC { $$ = crearNodo(eESCRIBIR, crearHoja($2), NULL); printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
+  IMPR CONSCAD {strcpy(nameID, formatearString(yytext));} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(nameID), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
   //| IMPR expresion PYC { $$ = crearNodo(eESCRIBIR, crearNodo($2), NULL); printf("\t{IMPR expresion PYC} es impresion\n"); };
 
 lectura:
@@ -171,16 +178,16 @@ factor:
   maximo { printf("\t{maximo} es factor\n");};
 
 mientras:
-  WHILE PARA condiciones PARC LLAVA programa LLAVC { printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
+  WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, pCondiciones, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
 
 condiciones:
   condiciones Y condicion { printf("\t{condiciones Y condicion} es condiciones\n"); }|
   condiciones O condicion { printf("\t{condiciones O condicion} es condiciones\n"); }|
-  condicion { printf("\t{condicion} es condiciones\n"); };
+  condicion {pCondiciones = pCondicion; $$ = pCondiciones; printf("\t{condicion} es condiciones\n"); };
 
 condicion:
-  expresion condicional expresion { printf("\t{expresion condicional expresion} es condicion\n"); }|
-  expresion { printf("\t{expresion} es condicion\n"); };
+  expresion {pAux =  pExpresion;} condicional {condicional = convertirLexemaEnOperacion(yytext);} expresion {pCondicion = crearNodo(condicional, pAux, pExpresion); $$=pCondicion; printf("\t{expresion condicional expresion} es condicion\n"); }|
+  expresion { pCondicion = pExpresion; $$=pCondicion; printf("\t{expresion} es condicion\n"); };
 
 condicional:
   CORCA { printf("\t{CORCA} es condicional\n"); }|
@@ -188,7 +195,6 @@ condicional:
   DIST { printf("\t{DIST} es condicional\n"); }|
   MENIG { printf("\t{MENIG} es condicional\n"); }|
   MAYIG { printf("\t{MAYIG} es condicional\n"); }|
-  NO_IG { printf("\t{NO_IG} es condicional\n"); }|
   IG { printf("\t{IG} es condicional\n"); };
 
 maximo:
@@ -199,9 +205,9 @@ parametros:
   expresion { printf("\t{expresion} es parametros\n"); };
 
 decision:
-  SI PARA condiciones PARC sentencia { printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
-  SI PARA condiciones PARC LLAVA programa LLAVC { printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC} es decision\n"); } |
-  SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC{ printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC} es decision\n"); } ;
+  SI PARA condiciones PARC sentencia {pDecision = crearNodo(eDECISION, pCondiciones, pSentencia); $$ = pDecision; printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
+  SI PARA condiciones PARC LLAVA programa LLAVC {pDecision = crearNodo(eDECISION, pCondiciones, pPrograma); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC} es decision\n"); } |
+  SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC{ pDecision = crearNodo(eDECISION, pCondiciones, crearNodo(eDECISIONCUERPO, $6, $10)); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC} es decision\n"); } ;
 
 %%
 
@@ -227,6 +233,36 @@ char* node_name(SExpression *e){
     return name;
   case eASIGNACION:
     sprintf(name, "=");
+    return name;
+  case eMAYOR:
+    sprintf(name, ">");
+    return name;
+  case eMENOR:
+    sprintf(name, "<");
+    return name;
+  case eIGUAL:
+    sprintf(name, "==");
+    return name;
+  case eDISTINTO:
+    sprintf(name, "<>");
+    return name;
+  case eMAYORIGUAL:
+    sprintf(name, ">=");
+    return name;
+  case eMENORIGUAL:
+    sprintf(name, "<=");
+    return name;
+  case eMIENTRAS:
+    sprintf(name, "WHILE");
+    return name;
+  case eDECISION:
+    sprintf(name, "IF");
+    return name;
+  case eDECISIONCUERPO:
+    sprintf(name, "CUERPO");
+    return name;
+  case eESCRIBIR:
+    sprintf(name, "PUT");
     return name;
   case ePROGRAMA:
     sprintf(name, "PROGRAMA");
@@ -263,7 +299,7 @@ void write_graphviz(SExpression *e){
 
 int main(int argc, char *argv[])
 {
-  if(( yyin = fopen(argv[1], "rt")) == NULL)
+  if (( yyin = fopen(argv[1], "rt")) == NULL)
   {
     printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
   }
@@ -271,8 +307,27 @@ int main(int argc, char *argv[])
   {
     SExpression *expression;
     yyparse(&expression);
-    //write_graphviz(expression);
+
+    write_graphviz(expression);
   }
+
+  t_pila pila;
+  crearPila(&pila);
+  StackItem item1;
+  StackItem item2;
+
+  strcpy(item1.value, "token1");
+  strcpy(item2.value, "token2");
+
+  meterEnPila(&pila, &item1);
+  meterEnPila(&pila, &item2);
+
+  StackItem aux;
+  sacarDePila(&pila, &aux);
+  printf("\n%s\n");
+  sacarDePila(&pila, &aux);
+  printf("\n%s\n");
+
 
   fclose(yyin);
   return 0;

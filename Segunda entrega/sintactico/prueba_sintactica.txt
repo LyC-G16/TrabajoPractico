@@ -1,1 +1,5 @@
-DIM <contador, promedio, actual, suma> AS <Integer, Float, Float, Float>
+if (actual > 0b10) {
+    PUT "no es mayor que 2";
+} else {
+    aux: 3 + 1;    
+}
