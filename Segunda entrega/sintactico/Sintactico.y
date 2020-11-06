@@ -293,6 +293,12 @@ void write_tree(SExpression *e, FILE *dotfile, int node){
 }
 
 void write_graphviz(SExpression *e){
+  if(e == NULL)
+  {
+    printf("ERROR: No se puede imprimir árbol nulo.");
+    exit(1);
+  }
+
   FILE *dotfile = fopen("tree.dot", "w");
   fprintf(dotfile, "digraph tree {\n");
   write_tree(e, dotfile, 1);
