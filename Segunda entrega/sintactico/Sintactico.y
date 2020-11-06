@@ -139,16 +139,23 @@ sentencia:
   
 declaracion:
   DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC {
-    vaciarPila(&pilaTipos);
-    vaciarPila(&pilaVariables);
+    sacarDePila(&pilaTipos, &itemTipo);
+    sacarDePila(&pilaVariables, &itemVar);
 
-    //while(!esPilaVacia(&pilaTipos))
-    //{
-      sacarDePila(&pilaTipos, &itemTipo);
-      sacarDePila(&pilaVariables, &itemVar);
-    //}
     pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
 
+    while(!esPilaVacia(&pilaTipos))
+    {
+      pAux = pDeclaracion;
+
+      sacarDePila(&pilaTipos, &itemTipo);
+      sacarDePila(&pilaVariables, &itemVar);
+
+      pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+      
+      pDeclaracion = crearNodo(ePROGRAMA, pAux, pDeclaracion);
+    }
+    
     printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); 
   };
 
@@ -168,8 +175,8 @@ tipo:
   FLOAT { printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
-  IMPR CONSCAD {formatearString(yytext, stringFormateado);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
-  //| IMPR expresion PYC { $$ = crearNodo(eESCRIBIR, crearNodo($2), NULL); printf("\t{IMPR expresion PYC} es impresion\n"); };
+  IMPR CONSCAD {formatearString(yytext, stringFormateado);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); }|
+  IMPR ID {strcpy(nameID, yytext);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(nameID), NULL); $$=pImpresion; printf("\t{IMPR ID PYC} es impresion\n"); };
 
 lectura:
   LEER ID {strcpy(nameID, yytext);} PYC { pLectura = crearNodo(eLEER, crearHoja(nameID), NULL); $$ = pLectura; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
