@@ -36,6 +36,12 @@
 
   char nameID[30];
   char stringFormateado[33];
+
+  t_pila pilaTipos;
+  t_pila pilaVariables;
+
+  StackItem itemTipo;
+  StackItem itemVar;
 %}
 
 %parse-param { SExpression **expression }
@@ -132,22 +138,25 @@ sentencia:
   decision {pSentencia = pDecision; $$ = pSentencia; printf("\t{decision} es sentencia\n"); };
   
 declaracion:
-  DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC { printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); };
+  DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC {
+    
+    printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); 
+  };
 
 variables:
-  variables COMA variable { printf("\t{variables COMA variable} es variables\n"); }|
-  variable { printf("\t{variable} es variables\n"); };
+  variables COMA variable { strcpy(itemVar.value, yytext); meterEnPila(&pilaVariables, &itemVar); printf("\t{variables COMA variable} es variables\n"); }|
+  variable { crearPila(&pilaVariables); strcpy(itemVar.value, yytext); meterEnPila(&pilaVariables, &itemVar); printf("\t{variable} es variables\n"); };
 
 variable:
-  ID { $$ = crearHoja(yytext); printf("\t{ID} es variable\n"); };
+  ID { printf("\t{ID} es variable\n"); };
 
 tipos:
-  tipos COMA tipo { printf("\t{tipos COMA tipo} es tipos\n"); }|
-  tipo { printf("\t{tipo} es tipos\n"); };
+  tipos COMA tipo { strcpy(itemTipo.value, yytext); meterEnPila(&pilaTipos, &itemTipo); printf("\t{tipos COMA tipo} es tipos\n"); }|
+  tipo { crearPila(&pilaTipos); strcpy(itemTipo.value, yytext); meterEnPila(&pilaTipos, &itemTipo); printf("\t{tipo} es tipos\n"); };
 
 tipo:
-  INTEGER { $$ = crearHoja(yytext); printf("\t{INTEGER} es tipo\n"); } |
-  FLOAT { $$ = crearHoja(yytext); printf("\t{FLOAT} es tipo\n"); };
+  INTEGER { printf("\t{INTEGER} es tipo\n"); } |
+  FLOAT { printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
   IMPR CONSCAD {formatearString(yytext, stringFormateado);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
