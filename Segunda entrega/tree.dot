@@ -1,5 +1,5 @@
 digraph tree {
- 1 [label="PROGRAMA"];
+ 1 [label="DECLARACION"];
  1 -> 2;
  2 [label="suma"];
  1 -> 3;

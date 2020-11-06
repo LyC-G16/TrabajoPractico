@@ -27,6 +27,7 @@ typedef enum tagEOperationType
   eMIENTRAS,
   eDECISION,
   eDECISIONCUERPO,
+  eDECLARACION,
   ePROGRAMA
 } EOperationType;
 

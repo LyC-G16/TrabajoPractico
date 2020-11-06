@@ -147,7 +147,7 @@ declaracion:
       sacarDePila(&pilaTipos, &itemTipo);
       sacarDePila(&pilaVariables, &itemVar);
     //}
-    pDeclaracion = crearNodo(ePROGRAMA, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+    pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
 
     printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); 
   };
@@ -285,6 +285,9 @@ char* node_name(SExpression *e){
     return name;
   case eLEER:
     sprintf(name, "GET");
+    return name;
+  case eDECLARACION:
+    sprintf(name, "DECLARACION");
     return name;
   case ePROGRAMA:
     sprintf(name, "PROGRAMA");
