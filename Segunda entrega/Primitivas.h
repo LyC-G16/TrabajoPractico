@@ -24,6 +24,7 @@ int meterEnPila(t_pila *, StackItem *);
 int sacarDePila(t_pila *, StackItem *);
 int esPilaVacia(const t_pila *);
 int esPilaLlena(const t_pila *);
+void vaciarPila(t_pila *);
 int tope_de_pila(const t_pila *, StackItem *);
 
 ///OTRAS FUNCIONES

@@ -52,3 +52,15 @@ int tope_de_pila(const t_pila *pp, StackItem *pi)
     *pi = (*pp)->dato;
     return 0;
 }
+
+void vaciarPila(t_pila *pp)
+{
+    t_nodo_pila *pn;
+    while (*pp)
+    {
+        pn = *pp;
+        *pp = (*pp)->psig;
+        printf("\n%s\n", pn->dato.value);
+        free(pn);
+    }
+}

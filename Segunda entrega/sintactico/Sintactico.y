@@ -139,7 +139,16 @@ sentencia:
   
 declaracion:
   DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC {
-    
+    vaciarPila(&pilaTipos);
+    vaciarPila(&pilaVariables);
+
+    //while(!esPilaVacia(&pilaTipos))
+    //{
+      sacarDePila(&pilaTipos, &itemTipo);
+      sacarDePila(&pilaVariables, &itemVar);
+    //}
+    pDeclaracion = crearNodo(ePROGRAMA, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+
     printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); 
   };
 
