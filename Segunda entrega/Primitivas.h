@@ -1,9 +1,11 @@
 #ifndef PRIMITIVAS_H_INCLUDED
 #define PRIMITIVAS_H_INCLUDED
+#include "expression.h"
 
 typedef struct tagStackItem
 {
     char value[30];
+    struct tagSExpression *estructura;
 } StackItem;
 
 typedef struct s_nodo_pila

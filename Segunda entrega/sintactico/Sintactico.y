@@ -15,6 +15,7 @@
   int yyerror();
   int yylex();
 
+  SExpression* pMaximo;
   SExpression* pFactor;
   SExpression* pExpresion;
   SExpression* pTermino;
@@ -39,9 +40,11 @@
 
   t_pila pilaTipos;
   t_pila pilaVariables;
+  t_pila pilaParametros;
 
   StackItem itemTipo;
   StackItem itemVar;
+  StackItem itemParametro;
 %}
 
 %parse-param { SExpression **expression }
@@ -201,7 +204,7 @@ factor:
   CONSREAL { printf("\t{CONSREAL} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
   CONSHEXA { printf("\t{CONSHEXA} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
   CONSBIN { printf("\t{CONSBIN} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
-  maximo { printf("\t{maximo} es factor\n");};
+  maximo {pFactor = pMaximo; $$=pFactor; printf("\t{maximo} es factor\n");};
 
 mientras:
   WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, pCondiciones, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
@@ -224,11 +227,28 @@ condicional:
   IG { printf("\t{IG} es condicional\n"); };
 
 maximo:
-  FNMAX PARA parametros PARC { printf("\t{FNMAX PARA parametros PARC} es maximo\n"); };
+  FNMAX PARA parametros PARC { 
+    sacarDePila(&pilaParametros, &itemParametro);
+
+    pMaximo = crearNodo(eDECLARACION, crearHoja("@max"), crearHoja("EXPRESION"));
+    pAux = crearNodo(ePROGRAMA, pMaximo, crearNodo(eASIGNACION, crearHoja("@max"), itemParametro.estructura));
+    
+    while(!esPilaVacia(&pilaParametros))
+    {
+      sacarDePila(&pilaParametros, &itemParametro);
+      pAux = crearNodo(ePROGRAMA, pAux, crearNodo(eDECISION, crearNodo(eMENOR, crearHoja("@max"), itemParametro.estructura), crearNodo(eASIGNACION, crearHoja("@max"), itemParametro.estructura)));
+      
+      
+      printf("\n%p\n", itemParametro.estructura);
+    }
+
+    pMaximo=pAux;
+    printf("\t{FNMAX PARA parametros PARC} es maximo\n"); 
+  };
 
 parametros:
-  parametros COMA expresion { printf("\t{parametros COMA expresion} es parametros\n"); } |
-  expresion { printf("\t{expresion} es parametros\n"); };
+  parametros COMA expresion { itemParametro.estructura = pExpresion; meterEnPila(&pilaParametros, &itemParametro); printf("\t{parametros COMA expresion} es parametros\n"); } |
+  expresion { crearPila(&pilaParametros); itemParametro.estructura = pExpresion; meterEnPila(&pilaParametros, &itemParametro); printf("\t{expresion} es parametros\n"); };
 
 decision:
   SI PARA condiciones PARC sentencia {pDecision = crearNodo(eDECISION, pCondiciones, pSentencia); $$ = pDecision; printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
