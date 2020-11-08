@@ -61,52 +61,55 @@ IG        "=="
 
 Y         "and"
 O         "or"
+NOT       "not"
 
 %%
 
-{FNMAX}      {printf("FNMAX: %s\n", yytext); return FNMAX;}
+
+{FNMAX}       {printf("FNMAX: %s\n", yytext); return FNMAX;}
 
 {DECVAR}      {printf("DECVAR: %s\n", yytext); return DECVAR;}
 {DEFTIPO}     {printf("DEFTIPO: %s\n", yytext); return DEFTIPO;}
-{IMPR}      {printf("IMPR: %s\n", yytext); return IMPR;}
-{LEER}      {printf("LEER: %s\n", yytext); return LEER;}
+{IMPR}        {printf("IMPR: %s\n", yytext); return IMPR;}
+{LEER}        {printf("LEER: %s\n", yytext); return LEER;}
 {INTEGER}     {printf("INTEGER: %s\n", yytext); return INTEGER;}
-{FLOAT}     {printf("FLOAT: %s\n", yytext); return FLOAT;}
+{FLOAT}       {printf("FLOAT: %s\n", yytext); return FLOAT;}
 
-{WHILE}     {printf("WHILE: %s\n", yytext); return WHILE;}
-{SI}      {printf("SI: %s\n", yytext); return SI;}
-{SINO}      {printf("SINO: %s\n", yytext); return SINO;}
+{WHILE}       {printf("WHILE: %s\n", yytext); return WHILE;}
+{SI}          {printf("SI: %s\n", yytext); return SI;}
+{SINO}        {printf("SINO: %s\n", yytext); return SINO;}
 
-{Y}     {printf("Y: %s\n", yytext); return Y;}
-{O}     {printf("O: %s\n", yytext); return O;}
+{Y}           {printf("Y: %s\n", yytext); return Y;}
+{O}           {printf("O: %s\n", yytext); return O;}
+{NOT}         {printf("NOT: %s\n", yytext); return NOT;}
 
-{ID}      {printf("ID: %s\n", yytext); return ID;}
-{COMA}      {printf("COMA: %s\n", yytext); return COMA;}
-{PYC}     {printf("PYC: %s\n", yytext); return PYC;}
-{ASIG}      {printf("ASIG: %s\n", yytext); return ASIG;}
+{ID}          {printf("ID: %s\n", yytext); return ID;}
+{COMA}        {printf("COMA: %s\n", yytext); return COMA;}
+{PYC}         {printf("PYC: %s\n", yytext); return PYC;}
+{ASIG}        {printf("ASIG: %s\n", yytext); return ASIG;}
 
 {CONSCAD}     {printf("CONSCAD: %s\n", yytext); return CONSCAD;}
 {CONSENT}     {printf("CONSENT: %s\n", yytext); return CONSENT;}
-{CONSREAL}      {printf("CONSREAL: %s\n", yytext); return CONSREAL;}
-{CONSHEXA}      {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
+{CONSREAL}    {printf("CONSREAL: %s\n", yytext); return CONSREAL;}
+{CONSHEXA}    {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
 {CONSBIN}     {printf("CONSBIN: %s\n", yytext); return CONSBIN;}
 
-{SUMA}      {printf("SUMA: %s\n", yytext); return SUMA;}
-{MENOS}     {printf("MENOS: %s\n", yytext); return MENOS;}
-{DIV}     {printf("DIV: %s\n", yytext); return DIV;}
-{MULT}      {printf("MULT: %s\n", yytext); return MULT;}
+{SUMA}        {printf("SUMA: %s\n", yytext); return SUMA;}
+{MENOS}       {printf("MENOS: %s\n", yytext); return MENOS;}
+{DIV}         {printf("DIV: %s\n", yytext); return DIV;}
+{MULT}        {printf("MULT: %s\n", yytext); return MULT;}
 
-{PARA}      {printf("PARA: %s\n", yytext); return PARA;}
-{PARC}      {printf("PARC: %s\n", yytext); return PARC;}
-{LLAVA}     {printf("LLAVA: %s\n", yytext); return LLAVA;}
-{LLAVC}     {printf("LLAVC: %s\n", yytext); return LLAVC;}
-{CORCA}     {printf("CORCA: %s\n", yytext); return CORCA;}
-{CORCC}     {printf("CORCC: %s\n", yytext); return CORCC;}
+{PARA}        {printf("PARA: %s\n", yytext); return PARA;}
+{PARC}        {printf("PARC: %s\n", yytext); return PARC;}
+{LLAVA}       {printf("LLAVA: %s\n", yytext); return LLAVA;}
+{LLAVC}       {printf("LLAVC: %s\n", yytext); return LLAVC;}
+{CORCA}       {printf("CORCA: %s\n", yytext); return CORCA;}
+{CORCC}       {printf("CORCC: %s\n", yytext); return CORCC;}
 
-{DIST}      {printf("DIST: %s\n", yytext); return DIST;}
-{MENIG}     {printf("MENIG: %s\n", yytext); return MENIG;}
-{MAYIG}     {printf("MAYIG: %s\n", yytext); return MAYIG;}
-{IG}      {printf("IG: %s\n", yytext); return IG;}
+{DIST}        {printf("DIST: %s\n", yytext); return DIST;}
+{MENIG}       {printf("MENIG: %s\n", yytext); return MENIG;}
+{MAYIG}       {printf("MAYIG: %s\n", yytext); return MAYIG;}
+{IG}          {printf("IG: %s\n", yytext); return IG;}
 
 "\t"
 "\n"

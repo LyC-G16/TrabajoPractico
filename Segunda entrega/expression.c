@@ -25,7 +25,7 @@ static SExpression *allocateExpression()
 
 SExpression *crearHoja(char *value)
 {
-  printf("\nHojaCreada: %s:\n", value);
+  printf("(hoja creada: %s)", value);
   SExpression *b = allocateExpression();
   if (b == NULL)
     return NULL;

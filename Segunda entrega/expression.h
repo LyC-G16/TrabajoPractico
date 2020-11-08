@@ -16,6 +16,7 @@ typedef enum tagEOperationType
   eIGUAL,
   eY,
   eO,
+  eNOT,
   eDISTINTO,
   eMAYORIGUAL,
   eMENORIGUAL,

@@ -98,6 +98,7 @@
 
 %token Y
 %token O
+%token NOT
 
 %union {
   char* value;
@@ -215,6 +216,7 @@ mientras:
 condiciones:
   condiciones Y condicion { pCondiciones = crearNodo(eY, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones Y condicion} es condiciones\n"); }|
   condiciones O condicion { pCondiciones = crearNodo(eO, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones O condicion} es condiciones\n"); }|
+  NOT condiciones { $$ = crearNodo(eNOT, $2, NULL); } |
   condicion {pCondiciones = pCondicion; $$ = pCondiciones; printf("\t{condicion} es condiciones\n"); };
 
 condicion:
@@ -288,6 +290,9 @@ char* node_name(SExpression *e){
     return name;
   case eMAYOR:
     sprintf(name, ">");
+    return name;
+  case eNOT:
+    sprintf(name, "NOT");
     return name;
   case eY:
     sprintf(name, "Y");
