@@ -36,6 +36,7 @@
   EOperationType condicional;
 
   char nameID[30];
+  char distinctVariableName[30];
   char stringFormateado[33];
 
   t_pila pilaTipos;
@@ -190,13 +191,13 @@ asignacion:
   ID {strcpy(nameID, yytext);} ASIG expresion PYC{ pAsignacion = crearNodo(eASIGNACION, crearHoja(nameID), pExpresion);$$=pAsignacion; printf("\t{ID ASIG expresion} es asignacion\n"); };
 
 expresion:
-  expresion SUMA termino { pExpresion = crearNodo(eSUMA, pExpresion, pTermino); $$=pExpresion; printf("\t{expresion SUMA termino} es expresion\n"); } |
-  expresion MENOS termino { pExpresion = crearNodo(eMENOS, pExpresion, pTermino); $$=pExpresion; printf("\t{expresion MENOS termino} es expresion\n"); } |
-  termino { pExpresion = pTermino; $$ = $1; printf("\t{termino} es expresion\n"); };
+  expresion SUMA termino { pExpresion = crearNodo(eSUMA, $1, pTermino); $$ = pExpresion; printf("\t{expresion SUMA termino} es expresion\n"); } |
+  expresion MENOS termino { pExpresion = crearNodo(eMENOS, $1, pTermino); $$ = pExpresion; printf("\t{expresion MENOS termino} es expresion\n"); } |
+  termino { pExpresion = pTermino; $$ = pExpresion; printf("\t{termino} es expresion\n"); };
 
 termino:
-  termino MULT factor { pTermino = crearNodo(eMULTIPLICACION, pTermino, pFactor); $$=pTermino; printf("\t{termino MULT factor} es termino\n"); } |
-  termino DIV factor { pTermino = crearNodo(eDIVISION, pTermino, pFactor); $$=pTermino; printf("\t{termino DIV factor} es termino\n"); } |
+  termino MULT factor { pTermino = crearNodo(eMULTIPLICACION, $1, pFactor); $$=pTermino; printf("\t{termino MULT factor} es termino\n"); } |
+  termino DIV factor { pTermino = crearNodo(eDIVISION, $1, pFactor); $$=pTermino; printf("\t{termino DIV factor} es termino\n"); } |
   factor { pTermino = pFactor; $$ = $1; printf("\t{factor} es termino\n"); };
 
 factor:
@@ -212,8 +213,8 @@ mientras:
   WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, pCondiciones, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
 
 condiciones:
-  condiciones Y condicion { printf("\t{condiciones Y condicion} es condiciones\n"); }|
-  condiciones O condicion { printf("\t{condiciones O condicion} es condiciones\n"); }|
+  condiciones Y condicion { pCondiciones = crearNodo(eY, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones Y condicion} es condiciones\n"); }|
+  condiciones O condicion { pCondiciones = crearNodo(eO, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones O condicion} es condiciones\n"); }|
   condicion {pCondiciones = pCondicion; $$ = pCondiciones; printf("\t{condicion} es condiciones\n"); };
 
 condicion:
@@ -232,17 +233,17 @@ maximo:
   FNMAX PARA parametros PARC { 
     sacarDePila(&pilaParametros[indicePilaParametros], &itemParametro);
 
-    strcpy(nameID, "@max");
+    strcpy(distinctVariableName, "@max");
     sprintf(stringFormateado, "%d",indicePilaParametros);
-    strcat(nameID, stringFormateado);
+    strcat(distinctVariableName, stringFormateado);
     
-    pMaximo = crearNodo(eDECLARACION, crearHoja(nameID), crearHoja("EXPRESION"));
-    pAux = crearNodo(ePROGRAMA, pMaximo, crearNodo(eASIGNACION, crearHoja(nameID), itemParametro.estructura));
+    pMaximo = crearNodo(eDECLARACION, crearHoja(distinctVariableName), crearHoja("EXPRESION"));
+    pAux = crearNodo(ePROGRAMA, pMaximo, crearNodo(eASIGNACION, crearHoja(distinctVariableName), itemParametro.estructura));
     
     while(!esPilaVacia(&pilaParametros[indicePilaParametros]))
     {
       sacarDePila(&pilaParametros[indicePilaParametros], &itemParametro);
-      pAux = crearNodo(ePROGRAMA, pAux, crearNodo(eDECISION, crearNodo(eMENOR, crearHoja(nameID), itemParametro.estructura), crearNodo(eASIGNACION, crearHoja(nameID), itemParametro.estructura)));
+      pAux = crearNodo(ePROGRAMA, pAux, crearNodo(eDECISION, crearNodo(eMENOR, crearHoja(distinctVariableName), itemParametro.estructura), crearNodo(eASIGNACION, crearHoja(nameID), itemParametro.estructura)));
 
     }
 
@@ -258,7 +259,7 @@ parametros:
 decision:
   SI PARA condiciones PARC sentencia {pDecision = crearNodo(eDECISION, pCondiciones, pSentencia); $$ = pDecision; printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
   SI PARA condiciones PARC LLAVA programa LLAVC {pDecision = crearNodo(eDECISION, pCondiciones, pPrograma); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC} es decision\n"); } |
-  SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC{ pDecision = crearNodo(eDECISION, pCondiciones, crearNodo(eDECISIONCUERPO, $6, $10)); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC} es decision\n"); } ;
+  SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC{ pDecision = crearNodo(eDECISION, $3, crearNodo(eDECISIONCUERPO, $6, $10)); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC} es decision\n"); } ;
 
 %%
 
@@ -287,6 +288,12 @@ char* node_name(SExpression *e){
     return name;
   case eMAYOR:
     sprintf(name, ">");
+    return name;
+  case eY:
+    sprintf(name, "Y");
+    return name;
+  case eO:
+    sprintf(name, "O");
     return name;
   case eMENOR:
     sprintf(name, "<");
