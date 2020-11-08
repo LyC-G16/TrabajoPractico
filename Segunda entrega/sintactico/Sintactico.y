@@ -216,7 +216,8 @@ mientras:
 condiciones:
   condiciones Y condicion { pCondiciones = crearNodo(eY, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones Y condicion} es condiciones\n"); }|
   condiciones O condicion { pCondiciones = crearNodo(eO, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones O condicion} es condiciones\n"); }|
-  NOT condiciones { $$ = crearNodo(eNOT, $2, NULL); } |
+  NOT condicion { pCondiciones = crearNodo(eNOT, $2, NULL); $$ = pCondiciones; printf("\t{NOT condicion} es condiciones\n"); } |
+  NOT PARA condiciones PARC { pCondiciones = crearNodo(eNOT, $3, NULL); $$ = pCondiciones; printf("\t{NOT PARA condiciones PARC} es condiciones\n"); } |
   condicion {pCondiciones = pCondicion; $$ = pCondiciones; printf("\t{condicion} es condiciones\n"); };
 
 condicion:

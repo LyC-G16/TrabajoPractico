@@ -17,7 +17,7 @@ while (contador <= 9) {
 PUT "La suma es: ";
 PUT suma;
 
-if (not actual > 0b10 and actual <> 0) {
+if (not (actual > 0b10 and actual <> 0)) {
   PUT "es mayor que 2 y distinto de 0";
 } else {
   if (actual < 0b111010)
