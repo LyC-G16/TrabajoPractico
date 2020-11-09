@@ -422,6 +422,26 @@ void write_graphviz(SExpression *e){
   fclose(dotfile);
 }
 //////////////////////////////////////////////////////
+////////// escribir tablas simbolos
+void escribirTablaSimbolos() {
+  FILE* arch;
+  int i;
+  if((arch = fopen("ts.txt","wb")) == NULL) {
+    printf("\nNo se puedo crear la tabla de simbolos.\n");
+    return;
+  }
+
+  fprintf(arch, "%-30s|%-15s|%-30s|%-10s\n\n", "NOMBRE", "TIPO DE DATO", "VALOR", "LONGITUD");
+
+  while (!colaVacia(&colaSimbolos)) {
+    desacolar(&colaSimbolos, &itemSimbolo);
+    //printf("ESTE ES EL VALOR PADRE: %s\n", itemSimbolo.nombre);
+    fprintf(arch, "%-30s|%-15s|%-30s|%-10d\n", itemSimbolo.nombre, itemSimbolo.tipo, itemSimbolo.valor, itemSimbolo.longitud);
+  }
+
+  fclose(arch);
+}
+//////////////////////////////////////////////////////
 
 int main(int argc, char *argv[])
 {
@@ -450,23 +470,4 @@ int yyerror(void)
 {
   printf("Error sintáctico\n");
   exit(1);
-}
-
-void escribirTablaSimbolos() {
-  FILE* arch;
-  int i;
-  if((arch = fopen("ts.txt","wb")) == NULL) {
-    printf("\nNo se puedo crear la tabla de simbolos.\n");
-    return;
-  }
-
-  fprintf(arch, "%-30s|%-15s|%-30s|%-10s\n\n", "NOMBRE", "TIPO DE DATO", "VALOR", "LONGITUD");
-
-  while (!colaVacia(&colaSimbolos)) {
-    desacolar(&colaSimbolos, &itemSimbolo);
-    printf("ESTE ES EL VALOR PADRE: %s\n", itemSimbolo.nombre);
-    fprintf(arch, "%-30s|%-15s|%-30s|%-10d\n", itemSimbolo.nombre, itemSimbolo.tipo, itemSimbolo.valor, itemSimbolo.longitud);
-  }
-
-  fclose(arch);
 }
