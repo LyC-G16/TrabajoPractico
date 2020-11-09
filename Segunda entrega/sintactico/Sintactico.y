@@ -43,7 +43,11 @@
   t_pila pilaVariables;
   t_pila pilaParametros[10];
 
+  t_cola colaSimbolos;
+  QueueItem itemSimbolo;
+
   int indicePilaParametros = -1;
+  int cantCadenas = 0;
 
   StackItem itemTipo;
   StackItem itemVar;
@@ -98,7 +102,7 @@
 
 %token Y
 %token O
-%token NOT
+%right NOT
 
 %union {
   char* value;
@@ -150,9 +154,12 @@ declaracion:
     sacarDePila(&pilaVariables, &itemVar);
 
     pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+    cargarItemSimboloVariable(&itemSimbolo, itemVar.value, itemTipo.value);
+    acolar(&colaSimbolos, &itemSimbolo);
 
     while(!esPilaVacia(&pilaTipos))
     {
+
       pAux = pDeclaracion;
 
       sacarDePila(&pilaTipos, &itemTipo);
@@ -161,6 +168,9 @@ declaracion:
       pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
       
       pDeclaracion = crearNodo(ePROGRAMA, pAux, pDeclaracion);
+
+      cargarItemSimboloVariable(&itemSimbolo, itemVar.value, itemTipo.value);
+      acolar(&colaSimbolos, &itemSimbolo);
     }
     
     printf("\t{DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC} es declaracion\n"); 
@@ -171,7 +181,10 @@ variables:
   variable { crearPila(&pilaVariables); strcpy(itemVar.value, yytext); meterEnPila(&pilaVariables, &itemVar); printf("\t{variable} es variables\n"); };
 
 variable:
-  ID { printf("\t{ID} es variable\n"); };
+  ID { 
+    printf("\t{ID} es variable\n");
+
+  };
 
 tipos:
   tipos COMA tipo { strcpy(itemTipo.value, yytext); meterEnPila(&pilaTipos, &itemTipo); printf("\t{tipos COMA tipo} es tipos\n"); }|
@@ -182,11 +195,20 @@ tipo:
   FLOAT { printf("\t{FLOAT} es tipo\n"); };
 
 impresion:
-  IMPR CONSCAD {formatearString(yytext, stringFormateado);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL); $$=pImpresion; printf("\t{IMPR CONSCAD PYC} es impresion\n"); }|
+  IMPR CONSCAD {
+    formatearString(yytext, stringFormateado);
+
+    cargarItemSimboloCadena(&itemSimbolo, yytext, &cantCadenas);
+    acolar(&colaSimbolos, &itemSimbolo);
+  } PYC { 
+    pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL);
+    $$ = pImpresion;
+    printf("\t{IMPR CONSCAD PYC} es impresion\n");
+  } |
   IMPR ID {strcpy(nameID, yytext);} PYC { pImpresion = crearNodo(eESCRIBIR, crearHoja(nameID), NULL); $$=pImpresion; printf("\t{IMPR ID PYC} es impresion\n"); };
 
 lectura:
-  LEER ID {strcpy(nameID, yytext);} PYC { pLectura = crearNodo(eLEER, crearHoja(nameID), NULL); $$ = pLectura; printf("\t{IMPR CONSCAD PYC} es impresion\n"); };
+  LEER ID {strcpy(nameID, yytext);} PYC { pLectura = crearNodo(eLEER, crearHoja(nameID), NULL); $$ = pLectura; printf("\t{IMPR ID PYC} es impresion\n"); };
 
 asignacion:
   ID {strcpy(nameID, yytext);} ASIG expresion PYC{ pAsignacion = crearNodo(eASIGNACION, crearHoja(nameID), pExpresion);$$=pAsignacion; printf("\t{ID ASIG expresion} es asignacion\n"); };
@@ -203,12 +225,40 @@ termino:
 
 factor:
   PARA expresion PARC { pFactor = pExpresion;$$ = $2; printf("\t{PARA expresion PARC} es factor\n"); } |
-  ID { printf("\t{ID} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext); } |
-  CONSENT { printf("\t{CONSENT} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
-  CONSREAL { printf("\t{CONSREAL} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
-  CONSHEXA { printf("\t{CONSHEXA} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
-  CONSBIN { printf("\t{CONSBIN} es factor\n"); pFactor = crearHoja(yytext);$$ =pFactor;printf("\n//////////VALOR:%s\n", yytext);} |
-  maximo {pFactor = pMaximo; $$=pFactor; printf("\t{maximo} es factor\n");};
+  ID { printf("\t{ID} es factor\n"); pFactor = crearHoja(yytext); $$ = pFactor; } |
+  CONSENT { 
+    printf("\t{CONSENT} es factor\n");
+    pFactor = crearHoja(yytext);
+    $$ = pFactor;
+    
+    cargarItemSimbolo(&itemSimbolo, "entero", yytext);
+    acolar(&colaSimbolos, &itemSimbolo);
+  } |
+  CONSREAL { 
+    printf("\t{CONSREAL} es factor\n"); 
+    pFactor = crearHoja(yytext); 
+    $$ = pFactor;
+
+    cargarItemSimbolo(&itemSimbolo, "real", yytext);
+    acolar(&colaSimbolos, &itemSimbolo);
+  } |
+  CONSHEXA { 
+    printf("\t{CONSHEXA} es factor\n");
+    pFactor = crearHoja(yytext);
+    $$ = pFactor;
+    
+    cargarItemSimbolo(&itemSimbolo, "hexadecimal", yytext);
+    acolar(&colaSimbolos, &itemSimbolo);
+  } |
+  CONSBIN {
+    printf("\t{CONSBIN} es factor\n");
+    pFactor = crearHoja(yytext);
+    $$ = pFactor;
+    
+    cargarItemSimbolo(&itemSimbolo, "binario", yytext);
+    acolar(&colaSimbolos, &itemSimbolo);
+  } |
+  maximo {pFactor = pMaximo; $$= pFactor; printf("\t{maximo} es factor\n");};
 
 mientras:
   WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, pCondiciones, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
@@ -217,7 +267,7 @@ condiciones:
   condiciones Y condicion { pCondiciones = crearNodo(eY, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones Y condicion} es condiciones\n"); }|
   condiciones O condicion { pCondiciones = crearNodo(eO, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones O condicion} es condiciones\n"); }|
   NOT condicion { pCondiciones = crearNodo(eNOT, $2, NULL); $$ = pCondiciones; printf("\t{NOT condicion} es condiciones\n"); } |
-  NOT PARA condiciones PARC { pCondiciones = crearNodo(eNOT, $3, NULL); $$ = pCondiciones; printf("\t{NOT PARA condiciones PARC} es condiciones\n"); } |
+  //NOT PARA condiciones PARC { pCondiciones = crearNodo(eNOT, $3, NULL); $$ = pCondiciones; printf("\t{NOT PARA condiciones PARC} es condiciones\n"); } |
   condicion {pCondiciones = pCondicion; $$ = pCondiciones; printf("\t{condicion} es condiciones\n"); };
 
 condicion:
@@ -375,6 +425,8 @@ void write_graphviz(SExpression *e){
 
 int main(int argc, char *argv[])
 {
+  crearCola(&colaSimbolos);
+
   if (( yyin = fopen(argv[1], "rt")) == NULL)
   {
     printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
@@ -387,23 +439,7 @@ int main(int argc, char *argv[])
     write_graphviz(expression);
   }
 
-  t_pila pila;
-  crearPila(&pila);
-  StackItem item1;
-  StackItem item2;
-
-  strcpy(item1.value, "token1");
-  strcpy(item2.value, "token2");
-
-  meterEnPila(&pila, &item1);
-  meterEnPila(&pila, &item2);
-
-  StackItem aux;
-  sacarDePila(&pila, &aux);
-  printf("\n%s\n");
-  sacarDePila(&pila, &aux);
-  printf("\n%s\n");
-
+  escribirTablaSimbolos();
 
   fclose(yyin);
   return 0;
@@ -414,4 +450,23 @@ int yyerror(void)
 {
   printf("Error sintáctico\n");
   exit(1);
+}
+
+void escribirTablaSimbolos() {
+  FILE* arch;
+  int i;
+  if((arch = fopen("ts.txt","wb")) == NULL) {
+    printf("\nNo se puedo crear la tabla de simbolos.\n");
+    return;
+  }
+
+  fprintf(arch, "%-30s|%-15s|%-30s|%-10s\n\n", "NOMBRE", "TIPO DE DATO", "VALOR", "LONGITUD");
+
+  while (!colaVacia(&colaSimbolos)) {
+    desacolar(&colaSimbolos, &itemSimbolo);
+    printf("ESTE ES EL VALOR PADRE: %s\n", itemSimbolo.nombre);
+    fprintf(arch, "%-30s|%-15s|%-30s|%-10d\n", itemSimbolo.nombre, itemSimbolo.tipo, itemSimbolo.valor, itemSimbolo.longitud);
+  }
+
+  fclose(arch);
 }

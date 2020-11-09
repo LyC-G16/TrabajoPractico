@@ -1,4 +1,5 @@
 DIM <contador, promedio, actual, suma> AS <Integer, Float, Float, Float>
+DIM <pivot> AS <Integer>
 
 PUT "Prueba.txt LyC Tema 2!";
 PUT "Ingrese un valor entero:";
@@ -17,8 +18,8 @@ while (contador <= 9) {
 PUT "La suma es: ";
 PUT suma;
 
-if (not (actual > 0b10 and actual <> 0)) {
-  PUT "es mayor que 2 y distinto de 0";
+if (actual > 0b10) {
+  PUT "es mayor que 2 y dist de 0";
 } else {
   if (actual < 0b111010)
     PUT "no es mayor que 2";
