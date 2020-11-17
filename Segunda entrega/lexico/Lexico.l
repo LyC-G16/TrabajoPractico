@@ -9,7 +9,10 @@
   int yylvan; //Variable reservada que interactua con el analizador lexico
   char* yyltext; //varible que devuelve flex
 
-  int yyerror(void);
+  float auxFloat;
+  int auxInt;
+
+  int yyerror(char*);
 %}
 
 %option noyywrap
@@ -89,8 +92,8 @@ NOT       "not"
 {ASIG}        {printf("ASIG: %s\n", yytext); return ASIG;}
 
 {CONSCAD}     {printf("CONSCAD: %s\n", yytext); return CONSCAD;}
-{CONSENT}     {printf("CONSENT: %s\n", yytext); return CONSENT;}
-{CONSREAL}    {printf("CONSREAL: %s\n", yytext); return CONSREAL;}
+{CONSENT}     {printf("CONSENT: %s\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ yyerror("El numero entero supera los limites."); } return CONSENT;}
+{CONSREAL}    {printf("CONSREAL: %s\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ yyerror("El numero real supera los limites."); } return CONSREAL;}
 {CONSHEXA}    {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
 {CONSBIN}     {printf("CONSBIN: %s\n", yytext); return CONSBIN;}
 
@@ -116,6 +119,6 @@ NOT       "not"
 "\n\t"
 "\r\n"
 " "
-.   yyerror();
+.   yyerror("No se reconoce token.");
 %%
 
