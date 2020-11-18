@@ -4,7 +4,6 @@
  */
 #ifndef __EXPRESSION_H__
 #define __EXPRESSION_H__
-
 /**
  * @brief The operation type
  */

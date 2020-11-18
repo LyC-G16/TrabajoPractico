@@ -134,6 +134,7 @@ programaPrima:
             printf("COMPILACIÓN EXITOSA!!\n");
             //SExpression *prueba;
              *expression = pPrograma;
+             generarASM(expression, &colaSimbolos);
            };
 
 programa: 
