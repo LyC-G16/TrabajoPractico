@@ -66,6 +66,8 @@ SExpression *crearNodo(EOperationType type,
  * @param b The expression
  */
 void deleteExpression(SExpression *b);
+int esHoja(SExpression *);
 EOperationType convertirLexemaEnOperacion(char *);
+char *convertirOperacionEnLexema(EOperationType);
 void formatearString(char *, char *);
 #endif // __EXPRESSION_H__

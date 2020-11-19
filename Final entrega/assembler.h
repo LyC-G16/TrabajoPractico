@@ -15,6 +15,9 @@ void generarASM(SExpression *ast, t_cola *colaSimbolos);
 void crearArchivo(FILE **pArchivo);
 void escribirCabecera(FILE *pArchivo);
 void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos);
+void escribirCodigo(FILE *pArchivo, SExpression *ast);
+void escribirFinal(FILE *pArchivo);
 //void imprimirArbolInOrden(SExpression *ast);
 
+extern int contadorAux;
 #endif // __ASSEMBLER_H__

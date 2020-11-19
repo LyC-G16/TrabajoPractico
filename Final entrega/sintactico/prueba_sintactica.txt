@@ -1,25 +1,8 @@
-DIM <contador, promedio, actual, suma> AS <Integer, Float, Float, Float>
+DIM <suma, cont> AS <Integer, Integer>
 
-PUT "Prueba.txt LyC Tema 2!";
-PUT "Ingrese un valor entero:";
-GET actual;
+suma: 2 + 4;
+cont: 5 + 3 * 2;
 
-contador: 0;
-suma: 02.5 + 0xA2B0;
+PUT "hola";
+GET cont;
 
-while (contador <= 9) {
-  contador: contador + 1;
-  actual: (contador / 0.342) + (contador * maximo(actual * contador, 2,
-    actual * pivot, maximo(4, actual, 0x00A8)));
-  suma: suma + actual;
-}
-
-PUT "La suma es: ";
-PUT suma;
-
-if (actual > 0b10 and actual <> 0) {
-  PUT "es mayor que 2 y distinto de 0";
-} else {
-  if (actual < 0b111010)
-    PUT "no es mayor que 2";
-}

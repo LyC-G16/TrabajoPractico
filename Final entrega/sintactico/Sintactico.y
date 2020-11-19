@@ -52,6 +52,8 @@
   StackItem itemTipo;
   StackItem itemVar;
   StackItem itemParametro;
+
+  void write_graphviz(SExpression*);
 %}
 
 %parse-param { SExpression **expression }
@@ -132,9 +134,9 @@
 programaPrima:
   programa {
             printf("COMPILACIÓN EXITOSA!!\n");
-            //SExpression *prueba;
              *expression = pPrograma;
-             generarASM(expression, &colaSimbolos);
+             write_graphviz(pPrograma);
+             generarASM(pPrograma, &colaSimbolos);
            };
 
 programa: 
@@ -457,7 +459,7 @@ int main(int argc, char *argv[])
     SExpression *expression;
     yyparse(&expression);
 
-    write_graphviz(expression);
+    //write_graphviz(expression);
   }
 
   escribirTablaSimbolos();

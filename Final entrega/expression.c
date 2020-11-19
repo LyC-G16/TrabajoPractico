@@ -77,6 +77,33 @@ EOperationType convertirLexemaEnOperacion(char *lexema)
     return eMENORIGUAL;
 }
 
+char *convertirOperacionEnLexema(EOperationType operacion)
+{
+  if (operacion == eSUMA)
+    return "+";
+
+  if (operacion == eMULTIPLICACION)
+    return "*";
+
+  if (operacion == eASIGNACION)
+    return "=";
+
+  if (operacion == ePROGRAMA)
+    return "PROGRAMA";
+
+  if (operacion == eVALUE)
+    return "VALORASD";
+
+  return "??";
+}
+
+int esHoja(SExpression *ast)
+{
+  if (ast == NULL)
+    return 0;
+  return ast->left == NULL && ast->right == NULL;
+}
+
 void formatearString(char *string, char result[])
 {
   /*

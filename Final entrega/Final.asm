@@ -4,24 +4,51 @@
 
 .DATA
 
+cont                          	dd	?
 suma                          	dd	?
-actual                        	dd	?
-promedio                      	dd	?
-contador                      	dd	?
-_cad0                         	dd	"Prueba.txt LyC Tema 2!"
-_cad1                         	dd	"Ingrese un valor entero:"
-_0                            	dd	0
-_02.5                         	dd	02.5
-_0xA2B0                       	dd	0xA2B0
-_9                            	dd	9
-_1                            	dd	1
-_0.342                        	dd	0.342
 _2                            	dd	2
 _4                            	dd	4
-_0x00A8                       	dd	0x00A8
-_cad2                         	dd	"La suma es: "
-_0b10                         	dd	0b10
-_0                            	dd	0
-_cad3                         	dd	"es mayor que 2 y distinto de 0"_Ÿ-w½­—é¨ùb
-_0b111010                     	dd	0b111010
-_cad4                         	dd	"no es mayor que 2"
+_5                            	dd	5
+_3                            	dd	3
+_2                            	dd	2
+_cad0                         	dd	"hola"
+
+
+;SUMA
+FLD _2
+FLD _4
+FADD 
+FSTP @aux0
+ffree
+;ASIGNACION
+FLD _@aux0
+FSTP _suma
+ffree
+;MULTIPLICACION
+FLD _3
+FLD _2
+FMUL 
+FSTP @aux1
+ffree
+;SUMA
+FLD _5
+FLD _@aux1
+FADD 
+FSTP @aux2
+ffree
+;ASIGNACION
+FLD _@aux2
+FSTP _cont
+ffree
+;ESCRIBIR
+displayString cadena
+;LEER
+getString cont
+
+
+FINAL:
+	mov ah, 1 ; pausa, espera que oprima una tecla:
+	int 21h ; AH=1 es el servicio de lectura
+	MOV AX, 4C00h ; Sale del Dos
+	INT 21h ; Enviamos la interripcion 21h
+END ; final del archivo.
