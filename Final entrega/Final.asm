@@ -4,46 +4,38 @@
 
 .DATA
 
-cont                          	dd	?
-suma                          	dd	?
-_2                            	dd	2
-_4                            	dd	4
+a                             	dd	?
 _5                            	dd	5
-_3                            	dd	3
-_2                            	dd	2
-_cad0                         	dd	"hola"
+_1                            	dd	1
 
 
+;MENOR
+FLD _5
+FCOMP _a
+FSTSW ax
+SAHF
+JNA	;MIENTRAS
+bloque_falso
+mientras_inicio:
+;MENOR
+FLD _5
+FCOMP _a
+FSTSW ax
+SAHF
+JNA	bloque_falso
 ;SUMA
-FLD _2
-FLD _4
+FLD _a
+FLD _1
 FADD 
 FSTP @aux0
 ffree
 ;ASIGNACION
 FLD _@aux0
-FSTP _suma
+FSTP _a
 ffree
-;MULTIPLICACION
-FLD _3
-FLD _2
-FMUL 
-FSTP @aux1
-ffree
-;SUMA
-FLD _5
-FLD _@aux1
-FADD 
-FSTP @aux2
-ffree
-;ASIGNACION
-FLD _@aux2
-FSTP _cont
-ffree
-;ESCRIBIR
-displayString cadena
-;LEER
-getString cont
+bloque_falso
+jmp mientras_inicio
+bloque_falso:
 
 
 FINAL:

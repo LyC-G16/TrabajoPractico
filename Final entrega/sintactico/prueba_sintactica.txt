@@ -1,8 +1,6 @@
-DIM <suma, cont> AS <Integer, Integer>
+DIM <a> AS <Integer>
 
-suma: 2 + 4;
-cont: 5 + 3 * 2;
-
-PUT "hola";
-GET cont;
-
+while(a<5)
+{
+    a: a +1;
+}
