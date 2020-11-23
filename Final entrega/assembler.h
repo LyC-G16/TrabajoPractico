@@ -11,12 +11,13 @@
 #include <string.h>
 #include <stdio.h>
 
-void generarASM(SExpression *ast, t_cola *colaSimbolos);
-void crearArchivo(FILE **pArchivo);
-void escribirCabecera(FILE *pArchivo);
-void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos);
-void escribirCodigo(FILE *pArchivo, SExpression *ast);
-void escribirFinal(FILE *pArchivo);
+void generarASM(SExpression*, t_cola*);
+void crearArchivo(FILE**);
+void escribirCabecera(FILE*);
+void escribirCabeceraCodeInit(FILE*);
+void escribirVariables(FILE*, t_cola*);
+void escribirCodigo(FILE*, SExpression*);
+void escribirFinal(FILE*);
 void pasarSimboloADecimal(QueueItem*);
 //void imprimirArbolInOrden(SExpression *ast);
 

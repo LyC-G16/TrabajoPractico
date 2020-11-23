@@ -11,11 +11,11 @@ contador                      	dd	?
 _cad0                         	dd	"Prueba.txt LyC Tema 2!"
 _cad1                         	dd	"Ingrese un valor entero:"
 _0                            	dd	0.0
-_02.5                         	dd	02.5
+_02p5                         	dd	02.5
 _0xA2B0                       	dd	41648.0
 _9                            	dd	9.0
 _1                            	dd	1.0
-_0.342                        	dd	0.342
+_0p342                        	dd	0.342
 _2                            	dd	2.0
 _4                            	dd	4.0
 _0x00A8                       	dd	168.0
@@ -27,6 +27,10 @@ _cad3                         	dd	"es mayor que 2 y dist de 0"
 _0b111010                     	dd	58.0
 _cad4                         	dd	"no es mayor que 2"
 
+.CODE
+MOV ax, @data
+MOV ds, ax
+FINIT; Inicializa el coprocesador
 
 ; ESCRIBIR
 displayString _cad0
@@ -39,8 +43,8 @@ FLD _0
 FSTP _contador
 ffree
 ; SUMA
-FLD _02.5
-FLD _0xA2B0
+FLD _5
+FLD _2B0
 FADD 
 FSTP @aux0
 ffree
@@ -67,7 +71,7 @@ FSTP _contador
 ffree
 ; DIVISION
 FLD _contador
-FLD _0.342
+FLD _42
 FDIV 
 FSTP @aux2
 ffree
@@ -106,7 +110,7 @@ displayString suma
 ; MAYOR
 condicion1:
 FLD _actual
-FCOMP _0b10
+FCOMP _0
 FSTSW ax
 SAHF
 JNA	bloque_falso1
@@ -117,7 +121,7 @@ jmp endif1
 bloque_falso1:
 ; MENOR
 condicion2:
-FLD _0b111010
+FLD _11010
 FCOMP _actual
 FSTSW ax
 SAHF

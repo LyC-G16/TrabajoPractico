@@ -65,8 +65,7 @@ void vaciarCola(t_cola *);
 void cargarItemSimbolo(QueueItem *, char *, char *);
 void cargarItemSimboloCadena(QueueItem *, char *, int *);
 void cargarItemSimboloVariable(QueueItem *, char *, char *);
-
-long hexdec(char*);
+char* replace_char(char* str);
 
 ///OTRAS FUNCIONES
 void mostrar_pila(const t_pila *, StackItem);

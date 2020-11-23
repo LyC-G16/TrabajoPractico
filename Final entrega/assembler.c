@@ -33,6 +33,8 @@ void generarASM(SExpression *ast, t_cola *colaSimbolos)
 
     escribirVariables(pArchivo, colaSimbolos);
 
+    escribirCabeceraCodeInit(pArchivo);
+
     escribirCodigo(pArchivo, ast);
 
     escribirFinal(pArchivo);
@@ -60,6 +62,10 @@ void escribirCabecera(FILE *pArchivo)
     fprintf(pArchivo, ".MODEL LARGE\n.386\n.STACK 200h\n\n.DATA\n\n");
 }
 
+void escribirCabeceraCodeInit(FILE* pArchivo) {
+    fprintf(pArchivo, ".CODE\nMOV ax, @data\nMOV ds, ax\nFINIT; Inicializa el coprocesador\n\n");
+}
+
 void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos)
 {
     QueueItem itemSimbolo;
@@ -82,7 +88,7 @@ void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos)
             fprintf(pArchivo, "\t%s", "?\n");
     }
 
-    fprintf(pArchivo, "\n\n");
+    fprintf(pArchivo, "\n");
 }
 
 void pasarSimboloADecimal(QueueItem* itemSimbolo) {

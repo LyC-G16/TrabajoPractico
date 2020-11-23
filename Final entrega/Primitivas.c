@@ -151,14 +151,19 @@ void vaciarCola(t_cola *pc)
 
 void cargarItemSimbolo(QueueItem *item, char *tipoDato, char *value)
 {
-    char cadenaAuxiliar[33];
-
-    item->longitud = 0;
+    char* cadenaAuxiliar;
 
     sprintf(cadenaAuxiliar, "_%s", value);
+
+    if (strcmp(tipoDato, "real") == 0) {
+        cadenaAuxiliar = replace_char(cadenaAuxiliar);
+    }
+
     strcpy(item->nombre, cadenaAuxiliar);
     strcpy(item->tipo, tipoDato);
     strcpy(item->valor, value);
+
+    item->longitud = 0;
 }
 
 void cargarItemSimboloCadena(QueueItem *item, char *value, int *contador)
@@ -181,4 +186,15 @@ void cargarItemSimboloVariable(QueueItem *item, char *nombre, char *tipo)
     strcpy(item->nombre, nombre);
     strcpy(item->tipo, tipo);
     strcpy(item->valor, "\0");
+}
+
+char* replace_char(char* str) {
+    char find = '.';
+    char replace = 'p';
+
+    char *current_pos = strchr(str, find);
+    *current_pos = replace;
+
+    printf("STRING RESULTADO: %s", str);
+    return str;
 }

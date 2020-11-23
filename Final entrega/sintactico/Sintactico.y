@@ -238,7 +238,8 @@ factor:
     acolar(&colaSimbolos, &itemSimbolo);
   } |
   CONSREAL { 
-    printf("\t{CONSREAL} es factor\n"); 
+    printf("\t{CONSREAL} es factor\n");
+
     pFactor = crearHoja(yytext); 
     $$ = pFactor;
 
