@@ -233,7 +233,6 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         item.id = ++contadorIf;
         nroIf = item.id;
         meterEnPila(&pilaIdDecisiones, &item);
-        printf("<<< ARRANCA EDECISION Nro %d >>>\n", nroIf);
 
         if (ast -> right -> type == eDECISIONCUERPO)
         {
@@ -257,12 +256,10 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         }
 
         sacarDePila(&pilaIdDecisiones, &item);
-        printf("<<< TERMINA EDECISION Nro %d >>>\n", nroIf);
         break;
     case eDECISIONCUERPO:
         tope_de_pila(&pilaIdDecisiones, &item);
         nroIf = item.id;
-        printf("<<< ARRANCA EDECISIONCUERPO Nro %d >>>\n", nroIf);
 
         fprintf(pArchivo, "; DECISIONCUERPO\n");
         escribirCodigo(pArchivo, ast -> left);
@@ -274,7 +271,6 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         ast -> right = NULL;
         fprintf(pArchivo, "endif%d:\n", nroIf);
 
-        printf("<<< TERMINA EDECISIONCUERPO Nro %d >>>\n", nroIf);
         break;
     case eMIENTRAS:
         nroWhile = contadorWhile++;

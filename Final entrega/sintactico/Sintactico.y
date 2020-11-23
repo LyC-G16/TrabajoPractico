@@ -156,21 +156,21 @@ declaracion:
     sacarDePila(&pilaTipos, &itemTipo);
     sacarDePila(&pilaVariables, &itemVar);
 
-    pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+    //pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
     cargarItemSimboloVariable(&itemSimbolo, itemVar.value, itemTipo.value);
     acolar(&colaSimbolos, &itemSimbolo);
 
     while(!esPilaVacia(&pilaTipos))
     {
 
-      pAux = pDeclaracion;
+      //pAux = pDeclaracion;
 
       sacarDePila(&pilaTipos, &itemTipo);
       sacarDePila(&pilaVariables, &itemVar);
 
-      pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
+      //pDeclaracion = crearNodo(eDECLARACION, crearHoja(itemVar.value), crearHoja(itemTipo.value));
       
-      pDeclaracion = crearNodo(ePROGRAMA, pAux, pDeclaracion);
+      //pDeclaracion = crearNodo(ePROGRAMA, pAux, pDeclaracion);
 
       cargarItemSimboloVariable(&itemSimbolo, itemVar.value, itemTipo.value);
       acolar(&colaSimbolos, &itemSimbolo);
@@ -296,7 +296,7 @@ maximo:
     cargarItemSimboloVariable(&itemSimbolo, distinctVariableName, "real");
     acolar(&colaSimbolos, &itemSimbolo);
 
-    pMaximo = crearNodo(eDECLARACION, crearHoja(distinctVariableName), crearHoja("EXPRESION"));
+    //pMaximo = crearNodo(eDECLARACION, crearHoja(distinctVariableName), crearHoja("EXPRESION"));
     pAux = crearNodo(ePROGRAMA, pMaximo, crearNodo(eASIGNACION, crearHoja(distinctVariableName), itemParametro.estructura));
     
     while(!esPilaVacia(&pilaParametros[indicePilaParametros]))
