@@ -13,7 +13,7 @@
   float auxFloat;
   int auxInt;
   char aux[100];
-  int yyerror(char*);
+  int yyerror();
 %}
 
 %option noyywrap
@@ -92,9 +92,9 @@ NOT       "not"
 {PYC}         {printf("PYC: %s\n", yytext); return PYC;}
 {ASIG}        {printf("ASIG: %s\n", yytext); return ASIG;}
 
-{CONSCAD}     { printf("CONSCAD: %s\n", yytext); strcpy(aux, yytext);if(strlen(aux) > 32){ yyerror("La cadena supera el limite.");} return CONSCAD;}
-{CONSENT}     {printf("CONSENT: %s\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ yyerror("El numero entero supera los limites."); } return CONSENT;}
-{CONSREAL}    {printf("CONSREAL: %s\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ yyerror("El numero real supera los limites."); } return CONSREAL;}
+{CONSCAD}     { printf("CONSCAD: %s\n", yytext); strcpy(aux, yytext);if(strlen(aux) > 32){ printf("La cadena supera el limite.\n"); yyerror();} return CONSCAD;}
+{CONSENT}     {printf("CONSENT: %s\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ printf("El numero entero supera los limites.\n"); yyerror(); } return CONSENT;}
+{CONSREAL}    {printf("CONSREAL: %s\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();} return CONSREAL;}
 {CONSHEXA}    {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
 {CONSBIN}     {printf("CONSBIN: %s\n", yytext); return CONSBIN;}
 
