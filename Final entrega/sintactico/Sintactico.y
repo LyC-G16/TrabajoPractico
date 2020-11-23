@@ -204,7 +204,7 @@ impresion:
     cargarItemSimboloCadena(&itemSimbolo, yytext, &cantCadenas);
     acolar(&colaSimbolos, &itemSimbolo);
   } PYC { 
-    pImpresion = crearNodo(eESCRIBIR, crearHoja(stringFormateado), NULL);
+    pImpresion = crearNodo(eESCRIBIR, crearHoja(itemSimbolo.nombre), NULL);
     $$ = pImpresion;
     printf("\t{IMPR CONSCAD PYC} es impresion\n");
   } |
@@ -264,7 +264,7 @@ factor:
   maximo {pFactor = pMaximo; $$= pFactor; printf("\t{maximo} es factor\n");};
 
 mientras:
-  WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, pCondiciones, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
+  WHILE PARA condiciones PARC LLAVA programa LLAVC { pMientras = crearNodo(eMIENTRAS, $3, pPrograma);printf("\t{WHILE PARA condicion PARC LLAVA programa LLAVC} es mientras\n"); };
 
 condiciones:
   condiciones Y condicion { pCondiciones = crearNodo(eY, pCondiciones, pCondicion); $$ = pCondiciones; printf("\t{condiciones Y condicion} es condiciones\n"); }|
@@ -441,7 +441,6 @@ void escribirTablaSimbolos() {
 
   while (!colaVacia(&colaSimbolos)) {
     desacolar(&colaSimbolos, &itemSimbolo);
-    //printf("ESTE ES EL VALOR PADRE: %s\n", itemSimbolo.nombre);
     fprintf(arch, "%-30s|%-15s|%-30s|%-10d\n", itemSimbolo.nombre, itemSimbolo.tipo, itemSimbolo.valor, itemSimbolo.longitud);
   }
 

@@ -7,6 +7,7 @@
 int contadorAux = 0;
 int contadorIf = 0;
 int contadorWhile = 0;
+int contadorCondicion = 0;
 int ifLayer = 0;
 t_pila pilaIdDecisiones;
 t_pila pilaIdMientras;
@@ -84,6 +85,8 @@ void escribirFinal(FILE *pArchivo)
 void escribirCodigo(FILE *pArchivo, SExpression *ast)
 {
     int nroIf = 0;
+    int nroWhile = 0;
+    int whileNroCondicion = 0;
     
     if (ast == NULL || esHoja(ast))
         return;
@@ -168,6 +171,9 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         break;
     case eMENOR:
         fprintf(pArchivo, "; MENOR\n");
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+
         fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
         fprintf(pArchivo, "FSTSW ax\n");
@@ -176,6 +182,9 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         break;
     case eMAYOR:
         fprintf(pArchivo, "; MAYOR\n");
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+        
         fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
         fprintf(pArchivo, "FCOMP _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FSTSW ax\n");
@@ -183,6 +192,9 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         fprintf(pArchivo, "JNA\t");
         break;
     case eMENORIGUAL:
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+        
         fprintf(pArchivo, "; MENORIGUAL\n");
         fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
@@ -191,6 +203,9 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         fprintf(pArchivo, "JNAE\t");
         break;
     case eMAYORIGUAL:
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+        
         fprintf(pArchivo, "; MAYORIGUAL\n");
         fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
@@ -199,16 +214,25 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         fprintf(pArchivo, "JNAE\t");
         break;
     case eO:
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+        
         fprintf(pArchivo, "; OR\n");
         fprintf(pArchivo, "o_siguiente_condicion\n");
         fprintf(pArchivo, "jmp bloque_verdadero\n");
         fprintf(pArchivo, "o_siguiente_condicion:\n");
         break;
     case eY:
+        fprintf(pArchivo, "condicion%d:\n", contadorCondicion);
+        contadorCondicion++;
+        
         fprintf(pArchivo, "; AND\n");
         fprintf(pArchivo, "bloque_falso\n");
         break;
     case eDECISION:
+        item.id = ++contadorIf;
+        nroIf = item.id;
+        meterEnPila(&pilaIdDecisiones, &item);
         printf("<<< ARRANCA EDECISION Nro %d >>>\n", nroIf);
 
         if (ast -> right -> type == eDECISIONCUERPO)
@@ -231,9 +255,13 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
             ast -> right = NULL;
             fprintf(pArchivo, "endif%d:\n", nroIf);
         }
+
+        sacarDePila(&pilaIdDecisiones, &item);
         printf("<<< TERMINA EDECISION Nro %d >>>\n", nroIf);
         break;
     case eDECISIONCUERPO:
+        tope_de_pila(&pilaIdDecisiones, &item);
+        nroIf = item.id;
         printf("<<< ARRANCA EDECISIONCUERPO Nro %d >>>\n", nroIf);
 
         fprintf(pArchivo, "; DECISIONCUERPO\n");
@@ -249,17 +277,28 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         printf("<<< TERMINA EDECISIONCUERPO Nro %d >>>\n", nroIf);
         break;
     case eMIENTRAS:
-        fprintf(pArchivo, "; MIENTRAS\n");
-        fprintf(pArchivo, "mientras_inicio:\n");
-        escribirCodigo(pArchivo, ast -> left);
-        ast -> left = NULL;
-        fprintf(pArchivo, "bloque_falso\n");
+        nroWhile = contadorWhile++;
+        whileNroCondicion = contadorCondicion - 1;
+
+        fprintf(pArchivo, "endwhile%d\n", nroWhile);
+        
         escribirCodigo(pArchivo, ast -> right);
-        ast -> right = NULL;
-        escribirCodigo(pArchivo, ast -> left);
-        ast -> left = NULL;
-        fprintf(pArchivo, "jmp mientras_inicio\n");
-        fprintf(pArchivo, "bloque_falso:\n");
+        fprintf(pArchivo, "jmp condicion%d\n", whileNroCondicion);
+        fprintf(pArchivo, "endwhile%d:\n", nroWhile);
+
+        // fprintf(pArchivo, "; MIENTRAS\n");
+        // fprintf(pArchivo, "mientras_inicio%d:\n", nroWhile);
+        // escribirCodigo(pArchivo, ast -> left);
+        // ast -> left = NULL;
+        // fprintf(pArchivo, "endwhile%d\n", nroWhile);
+        // escribirCodigo(pArchivo, ast -> right);
+        // ast -> right = NULL;
+        // escribirCodigo(pArchivo, ast -> left);
+        // ast -> left = NULL;
+        // fprintf(pArchivo, "jmp mientras_inicio%d\n", nroWhile);
+        // fprintf(pArchivo, "endwhile%d:\n", nroWhile);
+
+
         break;
     }
 
