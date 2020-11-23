@@ -4,6 +4,7 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include "y.tab.h"
+  #include <string.h>
 
   FILE *yyin; // funcion que hace el analisis.
   int yylvan; //Variable reservada que interactua con el analizador lexico
@@ -11,7 +12,7 @@
 
   float auxFloat;
   int auxInt;
-
+  char aux[100];
   int yyerror(char*);
 %}
 
@@ -35,7 +36,7 @@ LEER      "GET"
 INTEGER   "Integer"
 FLOAT     "Float"
 
-CONSCAD   ["].{1,30}["]
+CONSCAD   ["].*["]
 CONSENT   [-]?[0-9]+
 CONSREAL  [-]?({DIGITO}+[.]{DIGITO}*)|({DIGITO}*[.]{DIGITO}+)
 CONSHEXA  0[xX][0-9a-fA-F]{1,4}
@@ -91,7 +92,7 @@ NOT       "not"
 {PYC}         {printf("PYC: %s\n", yytext); return PYC;}
 {ASIG}        {printf("ASIG: %s\n", yytext); return ASIG;}
 
-{CONSCAD}     {printf("CONSCAD: %s\n", yytext); return CONSCAD;}
+{CONSCAD}     { printf("CONSCAD: %s\n", yytext); strcpy(aux, yytext);if(strlen(aux) > 32){ yyerror("La cadena supera el limite.");} return CONSCAD;}
 {CONSENT}     {printf("CONSENT: %s\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ yyerror("El numero entero supera los limites."); } return CONSENT;}
 {CONSREAL}    {printf("CONSREAL: %s\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ yyerror("El numero real supera los limites."); } return CONSREAL;}
 {CONSHEXA}    {printf("CONSHEXA: %s\n", yytext); return CONSHEXA;}
