@@ -13,6 +13,13 @@ t_pila pilaIdDecisiones;
 t_pila pilaIdMientras;
 StackItem item;
 
+static const long hextable[] = {
+   [0 ... 255] = -1, // bit aligned access into this table is considerably
+   ['0'] = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, // faster for most modern processors,
+   ['A'] = 10, 11, 12, 13, 14, 15,       // for the space conscious, reduce to
+   ['a'] = 10, 11, 12, 13, 14, 15        // signed char.
+};
+
 void generarASM(SExpression *ast, t_cola *colaSimbolos)
 {
     FILE *pArchivo;
@@ -63,13 +70,51 @@ void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos)
         //printf("ESTE ES EL VALOR PADRE: %s\n", itemSimbolo.nombre);
         fprintf(pArchivo, "%-30s\tdd", itemSimbolo.nombre);
 
-        if (strlen(itemSimbolo.valor) > 0)
+        if (strlen(itemSimbolo.valor) > 0) {
+            // pasar a decimal todo
+            if (strcmp(itemSimbolo.tipo, "cadena") != 0) {
+                pasarSimboloADecimal(&itemSimbolo);
+            }
+
             fprintf(pArchivo, "\t%s\n", itemSimbolo.valor);
+        }
         else
             fprintf(pArchivo, "\t%s", "?\n");
     }
 
     fprintf(pArchivo, "\n\n");
+}
+
+void pasarSimboloADecimal(QueueItem* itemSimbolo) {
+    char* endptr;
+
+    if (strcmp(itemSimbolo -> tipo, "real") == 0) {
+        return;
+    }
+    
+    if (strcmp(itemSimbolo -> tipo, "entero") == 0) {
+        sprintf(itemSimbolo -> valor, "%s.0", itemSimbolo -> valor);
+        return;
+    }
+    
+    if (strcmp(itemSimbolo -> tipo, "hexadecimal") == 0) {
+        sprintf(itemSimbolo -> valor, "%ld.0", strtol(itemSimbolo -> valor, &endptr, 16));
+        return;
+    }
+    
+    if (strcmp(itemSimbolo -> tipo, "binario") == 0) {
+        sprintf(itemSimbolo -> valor, "%ld.0", strtol((itemSimbolo -> valor) + 2, &endptr, 2));
+        return;
+    }
+}
+
+long hexdec(char *hex) {
+    hex = hex + 2;
+   long ret = 0; 
+   while (*hex && ret >= 0) {
+      ret = (ret << 4) | hextable[*hex++];
+   }
+   return ret;
 }
 
 void escribirFinal(FILE *pArchivo)

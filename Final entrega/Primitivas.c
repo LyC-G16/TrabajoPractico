@@ -157,7 +157,7 @@ void cargarItemSimbolo(QueueItem *item, char *tipoDato, char *value)
 
     sprintf(cadenaAuxiliar, "_%s", value);
     strcpy(item->nombre, cadenaAuxiliar);
-    strcpy(item->tipo, "-");
+    strcpy(item->tipo, tipoDato);
     strcpy(item->valor, value);
 }
 
@@ -169,7 +169,7 @@ void cargarItemSimboloCadena(QueueItem *item, char *value, int *contador)
 
     sprintf(cadenaAuxiliar, "_cad%d", *contador);
     strcpy(item->nombre, cadenaAuxiliar);
-    strcpy(item->tipo, "-");
+    strcpy(item->tipo, "cadena");
     strcpy(item->valor, value);
 
     (*contador)++;

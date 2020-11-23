@@ -17,6 +17,7 @@ void escribirCabecera(FILE *pArchivo);
 void escribirVariables(FILE *pArchivo, t_cola *colaSimbolos);
 void escribirCodigo(FILE *pArchivo, SExpression *ast);
 void escribirFinal(FILE *pArchivo);
+void pasarSimboloADecimal(QueueItem*);
 //void imprimirArbolInOrden(SExpression *ast);
 
 extern int contadorAux;
