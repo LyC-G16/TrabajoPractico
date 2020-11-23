@@ -1,7 +1,9 @@
-DIM <a> AS <Integer>
-
-while (a > 20)
+if (5 > 2) {
+    if (b > 16) {
+        PUT "Bien";
+    }
+}
+else
 {
-    a: a - 10;
-    PUT "LyC";
+    PUT "Mal";
 }

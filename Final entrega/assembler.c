@@ -5,10 +5,19 @@
 #include <stdio.h>
 
 int contadorAux = 0;
+int contadorIf = 0;
+int contadorWhile = 0;
+int ifLayer = 0;
+t_pila pilaIdDecisiones;
+t_pila pilaIdMientras;
+StackItem item;
 
 void generarASM(SExpression *ast, t_cola *colaSimbolos)
 {
     FILE *pArchivo;
+
+    crearPila(&pilaIdDecisiones);
+    crearPila(&pilaIdMientras);
 
     crearArchivo(&pArchivo);
 
@@ -74,178 +83,185 @@ void escribirFinal(FILE *pArchivo)
 
 void escribirCodigo(FILE *pArchivo, SExpression *ast)
 {
+    int nroIf = 0;
+    
     if (ast == NULL || esHoja(ast))
         return;
 
-    escribirCodigo(pArchivo, ast->left);
+    escribirCodigo(pArchivo, ast -> left);
 
-    switch (ast->type)
+    switch (ast -> type)
     {
     case eMULTIPLICACION:
-        fprintf(pArchivo, ";MULTIPLICACION\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->left->value);
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
+        fprintf(pArchivo, "; MULTIPLICACION\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FMUL \n");
         fprintf(pArchivo, "FSTP @aux%d\n", contadorAux);
         fprintf(pArchivo, "ffree\n");
-        sprintf(ast->value, "@aux%d", contadorAux);
-        ast->left = NULL;
-        ast->right = NULL;
+        sprintf(ast -> value, "@aux%d", contadorAux);
+        ast -> left = NULL;
+        ast -> right = NULL;
         contadorAux++;
         break;
     case eSUMA:
-        if (ast->right->type != eVALUE)
-            escribirCodigo(pArchivo, ast->right);
-        fprintf(pArchivo, ";SUMA\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->left->value);
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
+        if (ast -> right -> type != eVALUE)
+            escribirCodigo(pArchivo, ast -> right);
+        fprintf(pArchivo, "; SUMA\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FADD \n");
         fprintf(pArchivo, "FSTP @aux%d\n", contadorAux);
         fprintf(pArchivo, "ffree\n");
-        sprintf(ast->value, "@aux%d", contadorAux);
-        ast->left = NULL;
-        ast->right = NULL;
+        sprintf(ast -> value, "@aux%d", contadorAux);
+        ast -> left = NULL;
+        ast -> right = NULL;
         contadorAux++;
         break;
     case eDIVISION:
-        fprintf(pArchivo, ";DIVISION\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->left->value);
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
+        fprintf(pArchivo, "; DIVISION\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FDIV \n");
         fprintf(pArchivo, "FSTP @aux%d\n", contadorAux);
         fprintf(pArchivo, "ffree\n");
-        sprintf(ast->value, "@aux%d", contadorAux);
-        ast->left = NULL;
-        ast->right = NULL;
+        sprintf(ast -> value, "@aux%d", contadorAux);
+        ast -> left = NULL;
+        ast -> right = NULL;
         contadorAux++;
         break;
     case eMENOS:
-        if (ast->right->type != eVALUE)
-            escribirCodigo(pArchivo, ast->right);
-        fprintf(pArchivo, ";RESTA\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->left->value);
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
+        if (ast -> right -> type != eVALUE)
+            escribirCodigo(pArchivo, ast -> right);
+        fprintf(pArchivo, "; RESTA\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FSUB \n");
         fprintf(pArchivo, "FSTP @aux%d\n", contadorAux);
         fprintf(pArchivo, "ffree\n");
-        sprintf(ast->value, "@aux%d", contadorAux);
-        ast->left = NULL;
-        ast->right = NULL;
+        sprintf(ast -> value, "@aux%d", contadorAux);
+        ast -> left = NULL;
+        ast -> right = NULL;
         contadorAux++;
         break;
     case eASIGNACION:
-        if (ast->right->type != eVALUE)
-            escribirCodigo(pArchivo, ast->right);
-        fprintf(pArchivo, ";ASIGNACION\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
-        fprintf(pArchivo, "FSTP _%s\n", ast->left->value);
+        if (ast -> right -> type != eVALUE)
+            escribirCodigo(pArchivo, ast -> right);
+        fprintf(pArchivo, "; ASIGNACION\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
+        fprintf(pArchivo, "FSTP _%s\n", ast -> left -> value);
         fprintf(pArchivo, "ffree\n");
-        ast->left = NULL;
-        ast->right = NULL;
+        ast -> left = NULL;
+        ast -> right = NULL;
         break;
     case eLEER:
-        fprintf(pArchivo, ";LEER\n");
-        fprintf(pArchivo, "getString %s\n", ast->left->value);
-        ast->left = NULL;
+        fprintf(pArchivo, "; LEER\n");
+        fprintf(pArchivo, "getString %s\n", ast -> left -> value);
+        ast -> left = NULL;
         //ast = NULL;
         break;
     case eESCRIBIR:
-        fprintf(pArchivo, ";ESCRIBIR\n");
-        fprintf(pArchivo, "displayString %s\n", ast->left->value);
-        ast->left = NULL;
+        fprintf(pArchivo, "; ESCRIBIR\n");
+        fprintf(pArchivo, "displayString %s\n", ast -> left -> value);
+        ast -> left = NULL;
         //ast = NULL;
         break;
     case eMENOR:
-        fprintf(pArchivo, ";MENOR\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
-        fprintf(pArchivo, "FCOMP _%s\n", ast->left->value);
+        fprintf(pArchivo, "; MENOR\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
+        fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
         fprintf(pArchivo, "FSTSW ax\n");
         fprintf(pArchivo, "SAHF\n");
         fprintf(pArchivo, "JNA\t");
         break;
     case eMAYOR:
-        fprintf(pArchivo, ";MAYOR\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->left->value);
-        fprintf(pArchivo, "FCOMP _%s\n", ast->right->value);
+        fprintf(pArchivo, "; MAYOR\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> left -> value);
+        fprintf(pArchivo, "FCOMP _%s\n", ast -> right -> value);
         fprintf(pArchivo, "FSTSW ax\n");
         fprintf(pArchivo, "SAHF\n");
         fprintf(pArchivo, "JNA\t");
         break;
     case eMENORIGUAL:
-        fprintf(pArchivo, ";MENORIGUAL\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
-        fprintf(pArchivo, "FCOMP _%s\n", ast->left->value);
+        fprintf(pArchivo, "; MENORIGUAL\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
+        fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
         fprintf(pArchivo, "FSTSW ax\n");
         fprintf(pArchivo, "SAHF\n");
         fprintf(pArchivo, "JNAE\t");
         break;
     case eMAYORIGUAL:
-        fprintf(pArchivo, ";MAYORIGUAL\n");
-        fprintf(pArchivo, "FLD _%s\n", ast->right->value);
-        fprintf(pArchivo, "FCOMP _%s\n", ast->left->value);
+        fprintf(pArchivo, "; MAYORIGUAL\n");
+        fprintf(pArchivo, "FLD _%s\n", ast -> right -> value);
+        fprintf(pArchivo, "FCOMP _%s\n", ast -> left -> value);
         fprintf(pArchivo, "FSTSW ax\n");
         fprintf(pArchivo, "SAHF\n");
         fprintf(pArchivo, "JNAE\t");
         break;
     case eO:
-        fprintf(pArchivo, ";OR\n");
+        fprintf(pArchivo, "; OR\n");
         fprintf(pArchivo, "o_siguiente_condicion\n");
         fprintf(pArchivo, "jmp bloque_verdadero\n");
         fprintf(pArchivo, "o_siguiente_condicion:\n");
         break;
     case eY:
-        fprintf(pArchivo, ";AND\n");
+        fprintf(pArchivo, "; AND\n");
         fprintf(pArchivo, "bloque_falso\n");
         break;
     case eDECISION:
-        if (ast->right->type == eDECISIONCUERPO)
+        printf("<<< ARRANCA EDECISION Nro %d >>>\n", nroIf);
+
+        if (ast -> right -> type == eDECISIONCUERPO)
         {
-            fprintf(pArchivo, "bloque_falso\n");
+            fprintf(pArchivo, "bloque_falso%d\n", nroIf);
         }
         else
         {
-            fprintf(pArchivo, "endif\n");
+            fprintf(pArchivo, "endif%d\n", nroIf);
         }
 
-        fprintf(pArchivo, "bloque_verdadero:\n");
-
-        if (ast->right->type == eDECISIONCUERPO)
+        if (ast -> right -> type == eDECISIONCUERPO)
         {
-            escribirCodigo(pArchivo, ast->right);
-            ast->right = NULL;
+            escribirCodigo(pArchivo, ast -> right);
+            ast -> right = NULL;
         }
         else
         {
-            escribirCodigo(pArchivo, ast->right);
-            ast->right = NULL;
-            fprintf(pArchivo, "bloque_falso:\n");
-            fprintf(pArchivo, "endif:\n");
+            escribirCodigo(pArchivo, ast -> right);
+            ast -> right = NULL;
+            fprintf(pArchivo, "endif%d:\n", nroIf);
         }
+        printf("<<< TERMINA EDECISION Nro %d >>>\n", nroIf);
         break;
     case eDECISIONCUERPO:
-        fprintf(pArchivo, ";DECISIONCUERPO\n");
-        escribirCodigo(pArchivo, ast->left);
-        ast->left = NULL;
-        fprintf(pArchivo, "jmp endif\n");
-        fprintf(pArchivo, "bloque_falso:\n");
-        escribirCodigo(pArchivo, ast->right);
-        ast->right = NULL;
-        fprintf(pArchivo, "endif:\n");
+        printf("<<< ARRANCA EDECISIONCUERPO Nro %d >>>\n", nroIf);
+
+        fprintf(pArchivo, "; DECISIONCUERPO\n");
+        escribirCodigo(pArchivo, ast -> left);
+        ast -> left = NULL;
+        fprintf(pArchivo, "jmp endif%d\n", nroIf);
+
+        fprintf(pArchivo, "bloque_falso%d:\n", nroIf);
+        escribirCodigo(pArchivo, ast -> right);
+        ast -> right = NULL;
+        fprintf(pArchivo, "endif%d:\n", nroIf);
+
+        printf("<<< TERMINA EDECISIONCUERPO Nro %d >>>\n", nroIf);
         break;
     case eMIENTRAS:
-        fprintf(pArchivo, ";MIENTRAS\n");
+        fprintf(pArchivo, "; MIENTRAS\n");
         fprintf(pArchivo, "mientras_inicio:\n");
-        escribirCodigo(pArchivo, ast->left);
-        ast->left = NULL;
+        escribirCodigo(pArchivo, ast -> left);
+        ast -> left = NULL;
         fprintf(pArchivo, "bloque_falso\n");
-        escribirCodigo(pArchivo, ast->right);
-        ast->right = NULL;
-        escribirCodigo(pArchivo, ast->left);
-        ast->left = NULL;
+        escribirCodigo(pArchivo, ast -> right);
+        ast -> right = NULL;
+        escribirCodigo(pArchivo, ast -> left);
+        ast -> left = NULL;
         fprintf(pArchivo, "jmp mientras_inicio\n");
         fprintf(pArchivo, "bloque_falso:\n");
         break;
     }
 
-    escribirCodigo(pArchivo, ast->right);
+    escribirCodigo(pArchivo, ast -> right);
 }

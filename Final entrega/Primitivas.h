@@ -30,6 +30,7 @@ typedef struct
 typedef struct tagStackItem
 {
     char value[30];
+    int id;
     struct tagSExpression *estructura;
 } StackItem;
 

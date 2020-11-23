@@ -316,8 +316,8 @@ parametros:
   expresion { indicePilaParametros++; crearPila(&pilaParametros[indicePilaParametros]); itemParametro.estructura = pExpresion; meterEnPila(&pilaParametros[indicePilaParametros], &itemParametro); printf("\t{expresion} es parametros\n"); };
 
 decision:
-  SI PARA condiciones PARC sentencia {pDecision = crearNodo(eDECISION, pCondiciones, pSentencia); $$ = pDecision; printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
-  SI PARA condiciones PARC LLAVA programa LLAVC {pDecision = crearNodo(eDECISION, pCondiciones, pPrograma); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC} es decision\n"); } |
+  SI PARA condiciones PARC sentencia {pDecision = crearNodo(eDECISION, $3, pSentencia); $$ = pDecision; printf("\t{SI PARA condiciones PARC sentencia} es decision\n"); } |
+  SI PARA condiciones PARC LLAVA programa LLAVC {pDecision = crearNodo(eDECISION, $3, pPrograma); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC} es decision\n"); } |
   SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC{ pDecision = crearNodo(eDECISION, $3, crearNodo(eDECISIONCUERPO, $6, $10)); $$ = pDecision; printf("\t{SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC} es decision\n"); } ;
 
 %%
