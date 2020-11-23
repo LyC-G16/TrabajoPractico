@@ -31,7 +31,7 @@ void crearArchivo(FILE **pArchivo)
 
     if (*pArchivo == NULL)
     {
-        printf("\nNo se puedo crear el archivo de assembler.\n");
+        printf("\nNo se pudo crear el archivo de assembler.\n");
         exit(1);
     }
 }
@@ -218,8 +218,8 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         {
             escribirCodigo(pArchivo, ast->right);
             ast->right = NULL;
-            fprintf(pArchivo, "bloque_falso\n");
-            fprintf(pArchivo, "endif\n");
+            fprintf(pArchivo, "bloque_falso:\n");
+            fprintf(pArchivo, "endif:\n");
         }
         break;
     case eDECISIONCUERPO:
@@ -230,11 +230,10 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         fprintf(pArchivo, "bloque_falso:\n");
         escribirCodigo(pArchivo, ast->right);
         ast->right = NULL;
-        fprintf(pArchivo, "endif\n");
+        fprintf(pArchivo, "endif:\n");
         break;
     case eMIENTRAS:
         fprintf(pArchivo, ";MIENTRAS\n");
-        fprintf(pArchivo, "bloque_falso\n");
         fprintf(pArchivo, "mientras_inicio:\n");
         escribirCodigo(pArchivo, ast->left);
         ast->left = NULL;
@@ -243,7 +242,6 @@ void escribirCodigo(FILE *pArchivo, SExpression *ast)
         ast->right = NULL;
         escribirCodigo(pArchivo, ast->left);
         ast->left = NULL;
-        fprintf(pArchivo, "bloque_falso\n");
         fprintf(pArchivo, "jmp mientras_inicio\n");
         fprintf(pArchivo, "bloque_falso:\n");
         break;

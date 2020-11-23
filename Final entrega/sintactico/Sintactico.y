@@ -293,6 +293,9 @@ maximo:
     sprintf(stringFormateado, "%d",indicePilaParametros);
     strcat(distinctVariableName, stringFormateado);
     
+    cargarItemSimboloVariable(&itemSimbolo, distinctVariableName, "real");
+    acolar(&colaSimbolos, &itemSimbolo);
+
     pMaximo = crearNodo(eDECLARACION, crearHoja(distinctVariableName), crearHoja("EXPRESION"));
     pAux = crearNodo(ePROGRAMA, pMaximo, crearNodo(eASIGNACION, crearHoja(distinctVariableName), itemParametro.estructura));
     

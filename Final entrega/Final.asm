@@ -5,34 +5,37 @@
 .DATA
 
 a                             	dd	?
-_5                            	dd	5
-_1                            	dd	1
+_20                           	dd	20
+_10                           	dd	10
+_cad0                         	dd	"LyC"
 
 
-;MENOR
-FLD _5
-FCOMP _a
+;MAYOR
+FLD _a
+FCOMP _20
 FSTSW ax
 SAHF
 JNA	;MIENTRAS
 bloque_falso
 mientras_inicio:
-;MENOR
-FLD _5
-FCOMP _a
+;MAYOR
+FLD _a
+FCOMP _20
 FSTSW ax
 SAHF
 JNA	bloque_falso
-;SUMA
+;RESTA
 FLD _a
-FLD _1
-FADD 
+FLD _10
+FSUB 
 FSTP @aux0
 ffree
 ;ASIGNACION
 FLD _@aux0
 FSTP _a
 ffree
+;ESCRIBIR
+displayString cadena
 bloque_falso
 jmp mientras_inicio
 bloque_falso:

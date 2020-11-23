@@ -1,6 +1,7 @@
 DIM <a> AS <Integer>
 
-while(a<5)
+while (a > 20)
 {
-    a: a +1;
+    a: a - 10;
+    PUT "LyC";
 }
