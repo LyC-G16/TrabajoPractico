@@ -182,8 +182,12 @@ void cargarItemSimboloCadena(QueueItem *item, char *value, int *contador)
 
 void cargarItemSimboloVariable(QueueItem *item, char *nombre, char *tipo)
 {
+    char* cadenaAuxiliar;
+
+    sprintf(cadenaAuxiliar, "_%s", nombre);
+
     item->longitud = 0;
-    strcpy(item->nombre, nombre);
+    strcpy(item->nombre, cadenaAuxiliar);
     strcpy(item->tipo, tipo);
     strcpy(item->valor, "\0");
 }

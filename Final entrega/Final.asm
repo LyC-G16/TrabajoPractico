@@ -4,10 +4,10 @@
 
 .DATA
 
-suma                          	dd	?
-actual                        	dd	?
-promedio                      	dd	?
-contador                      	dd	?
+_suma                         	dd	?
+_actual                       	dd	?
+_promedio                     	dd	?
+_contador                     	dd	?
 _cad0                         	dd	"Prueba.txt LyC Tema 2!"
 _cad1                         	dd	"Ingrese un valor entero:"
 _0                            	dd	0.0
@@ -19,8 +19,8 @@ _0p342                        	dd	0.342
 _2                            	dd	2.0
 _4                            	dd	4.0
 _0x00A8                       	dd	168.0
-@max1                         	dd	?
-@max0                         	dd	?
+_@max1                        	dd	?
+_@max0                        	dd	?
 _cad2                         	dd	"La suma es: "
 _0b10                         	dd	2.0
 _cad3                         	dd	"es mayor que 2 y dist de 0"
@@ -59,46 +59,40 @@ FCOMP _contador
 FSTSW ax
 SAHF
 JNAE	endwhile0
-; SUMA
-FLD _contador
-FLD _1
-FADD 
-FSTP @aux1
-ffree
 ; ASIGNACION
-FLD _@aux1
+FLD _x1
 FSTP _contador
 ffree
 ; DIVISION
 FLD _contador
 FLD _42
 FDIV 
-FSTP @aux2
+FSTP @aux1
 ffree
 ; MULTIPLICACION
 FLD _contador
 FLD _
 FMUL 
-FSTP @aux3
+FSTP @aux2
 ffree
 ; SUMA
+FLD _@aux1
 FLD _@aux2
-FLD _@aux3
 FADD 
-FSTP @aux4
+FSTP @aux3
 ffree
 ; ASIGNACION
-FLD _@aux4
+FLD _@aux3
 FSTP _actual
 ffree
 ; SUMA
 FLD _suma
 FLD _actual
 FADD 
-FSTP @aux5
+FSTP @aux4
 ffree
 ; ASIGNACION
-FLD _@aux5
+FLD _@aux4
 FSTP _suma
 ffree
 jmp condicion0
