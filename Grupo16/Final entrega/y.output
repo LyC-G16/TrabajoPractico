@@ -1,0 +1,1354 @@
+Terminals unused in grammar
+
+   LETRA
+   DIGITO
+
+
+Gramática
+
+    0 $accept: programaPrima $end
+
+    1 programaPrima: programa
+
+    2 programa: sentencia
+    3         | programa sentencia
+
+    4 sentencia: impresion
+    5          | declaracion
+    6          | lectura
+    7          | asignacion
+    8          | mientras
+    9          | decision
+
+   10 declaracion: DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC
+
+   11 variables: variables COMA variable
+   12          | variable
+
+   13 variable: ID
+
+   14 tipos: tipos COMA tipo
+   15      | tipo
+
+   16 tipo: INTEGER
+   17     | FLOAT
+
+   18 $@1: /* vacío */
+
+   19 impresion: IMPR CONSCAD $@1 PYC
+
+   20 $@2: /* vacío */
+
+   21 impresion: IMPR ID $@2 PYC
+
+   22 $@3: /* vacío */
+
+   23 lectura: LEER ID $@3 PYC
+
+   24 $@4: /* vacío */
+
+   25 asignacion: ID $@4 ASIG expresion PYC
+
+   26 expresion: expresion SUMA termino
+   27          | expresion MENOS termino
+   28          | termino
+
+   29 termino: termino MULT factor
+   30        | termino DIV factor
+   31        | factor
+
+   32 factor: PARA expresion PARC
+   33       | ID
+   34       | CONSENT
+   35       | CONSREAL
+   36       | CONSHEXA
+   37       | CONSBIN
+   38       | maximo
+
+   39 mientras: WHILE PARA condiciones PARC LLAVA programa LLAVC
+
+   40 condiciones: condiciones Y condicion
+   41            | condiciones O condicion
+   42            | NOT condicion
+   43            | condicion
+
+   44 $@5: /* vacío */
+
+   45 $@6: /* vacío */
+
+   46 condicion: expresion $@5 condicional $@6 expresion
+   47          | expresion
+
+   48 condicional: CORCA
+   49            | CORCC
+   50            | DIST
+   51            | MENIG
+   52            | MAYIG
+   53            | IG
+
+   54 maximo: FNMAX PARA parametros PARC
+
+   55 parametros: parametros COMA expresion
+   56           | expresion
+
+   57 decision: SI PARA condiciones PARC sentencia
+   58         | SI PARA condiciones PARC LLAVA programa LLAVC
+   59         | SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+error (256)
+LETRA (258)
+DIGITO (259)
+FNMAX (260) 54
+ID (261) 13 21 23 25 33
+COMA (262) 11 14 55
+PYC (263) 19 21 23 25
+ASIG (264) 25
+DECVAR (265) 10
+DEFTIPO (266) 10
+IMPR (267) 19 21
+LEER (268) 23
+INTEGER (269) 16
+FLOAT (270) 17
+CONSCAD (271) 19
+CONSENT (272) 34
+CONSREAL (273) 35
+CONSHEXA (274) 36
+CONSBIN (275) 37
+SUMA (276) 26
+MENOS (277) 27
+DIV (278) 30
+MULT (279) 29
+WHILE (280) 39
+SI (281) 57 58 59
+SINO (282) 59
+PARA (283) 32 39 54 57 58 59
+PARC (284) 32 39 54 57 58 59
+LLAVA (285) 39 58 59
+LLAVC (286) 39 58 59
+CORCA (287) 10 48
+CORCC (288) 10 49
+DIST (289) 50
+MENIG (290) 51
+MAYIG (291) 52
+IG (292) 53
+Y (293) 40
+O (294) 41
+NOT (295) 42
+
+
+No terminales con las reglas donde aparecen
+
+$accept (41)
+    en la izquierda: 0
+programaPrima (42)
+    en la izquierda: 1, en la derecha: 0
+programa (43)
+    en la izquierda: 2 3, en la derecha: 1 3 39 58 59
+sentencia (44)
+    en la izquierda: 4 5 6 7 8 9, en la derecha: 2 3 57
+declaracion (45)
+    en la izquierda: 10, en la derecha: 5
+variables (46)
+    en la izquierda: 11 12, en la derecha: 10 11
+variable (47)
+    en la izquierda: 13, en la derecha: 11 12
+tipos (48)
+    en la izquierda: 14 15, en la derecha: 10 14
+tipo (49)
+    en la izquierda: 16 17, en la derecha: 14 15
+impresion (50)
+    en la izquierda: 19 21, en la derecha: 4
+$@1 (51)
+    en la izquierda: 18, en la derecha: 19
+$@2 (52)
+    en la izquierda: 20, en la derecha: 21
+lectura (53)
+    en la izquierda: 23, en la derecha: 6
+$@3 (54)
+    en la izquierda: 22, en la derecha: 23
+asignacion (55)
+    en la izquierda: 25, en la derecha: 7
+$@4 (56)
+    en la izquierda: 24, en la derecha: 25
+expresion (57)
+    en la izquierda: 26 27 28, en la derecha: 25 26 27 32 46 47 55
+    56
+termino (58)
+    en la izquierda: 29 30 31, en la derecha: 26 27 28 29 30
+factor (59)
+    en la izquierda: 32 33 34 35 36 37 38, en la derecha: 29 30 31
+mientras (60)
+    en la izquierda: 39, en la derecha: 8
+condiciones (61)
+    en la izquierda: 40 41 42 43, en la derecha: 39 40 41 57 58 59
+condicion (62)
+    en la izquierda: 46 47, en la derecha: 40 41 42 43
+$@5 (63)
+    en la izquierda: 44, en la derecha: 46
+$@6 (64)
+    en la izquierda: 45, en la derecha: 46
+condicional (65)
+    en la izquierda: 48 49 50 51 52 53, en la derecha: 46
+maximo (66)
+    en la izquierda: 54, en la derecha: 38
+parametros (67)
+    en la izquierda: 55 56, en la derecha: 54 55
+decision (68)
+    en la izquierda: 57 58 59, en la derecha: 9
+
+
+estado 0
+
+    0 $accept: . programaPrima $end
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+
+    programaPrima  ir al estado 7
+    programa       ir al estado 8
+    sentencia      ir al estado 9
+    declaracion    ir al estado 10
+    impresion      ir al estado 11
+    lectura        ir al estado 12
+    asignacion     ir al estado 13
+    mientras       ir al estado 14
+    decision       ir al estado 15
+
+
+estado 1
+
+   25 asignacion: ID . $@4 ASIG expresion PYC
+
+    $default  reduce usando la regla 24 ($@4)
+
+    $@4  ir al estado 16
+
+
+estado 2
+
+   10 declaracion: DECVAR . CORCA variables CORCC DEFTIPO CORCA tipos CORCC
+
+    CORCA  desplazar e ir al estado 17
+
+
+estado 3
+
+   19 impresion: IMPR . CONSCAD $@1 PYC
+   21          | IMPR . ID $@2 PYC
+
+    ID       desplazar e ir al estado 18
+    CONSCAD  desplazar e ir al estado 19
+
+
+estado 4
+
+   23 lectura: LEER . ID $@3 PYC
+
+    ID  desplazar e ir al estado 20
+
+
+estado 5
+
+   39 mientras: WHILE . PARA condiciones PARC LLAVA programa LLAVC
+
+    PARA  desplazar e ir al estado 21
+
+
+estado 6
+
+   57 decision: SI . PARA condiciones PARC sentencia
+   58         | SI . PARA condiciones PARC LLAVA programa LLAVC
+   59         | SI . PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC
+
+    PARA  desplazar e ir al estado 22
+
+
+estado 7
+
+    0 $accept: programaPrima . $end
+
+    $end  desplazar e ir al estado 23
+
+
+estado 8
+
+    1 programaPrima: programa .
+    3 programa: programa . sentencia
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+
+    $default  reduce usando la regla 1 (programaPrima)
+
+    sentencia    ir al estado 24
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 9
+
+    2 programa: sentencia .
+
+    $default  reduce usando la regla 2 (programa)
+
+
+estado 10
+
+    5 sentencia: declaracion .
+
+    $default  reduce usando la regla 5 (sentencia)
+
+
+estado 11
+
+    4 sentencia: impresion .
+
+    $default  reduce usando la regla 4 (sentencia)
+
+
+estado 12
+
+    6 sentencia: lectura .
+
+    $default  reduce usando la regla 6 (sentencia)
+
+
+estado 13
+
+    7 sentencia: asignacion .
+
+    $default  reduce usando la regla 7 (sentencia)
+
+
+estado 14
+
+    8 sentencia: mientras .
+
+    $default  reduce usando la regla 8 (sentencia)
+
+
+estado 15
+
+    9 sentencia: decision .
+
+    $default  reduce usando la regla 9 (sentencia)
+
+
+estado 16
+
+   25 asignacion: ID $@4 . ASIG expresion PYC
+
+    ASIG  desplazar e ir al estado 25
+
+
+estado 17
+
+   10 declaracion: DECVAR CORCA . variables CORCC DEFTIPO CORCA tipos CORCC
+
+    ID  desplazar e ir al estado 26
+
+    variables  ir al estado 27
+    variable   ir al estado 28
+
+
+estado 18
+
+   21 impresion: IMPR ID . $@2 PYC
+
+    $default  reduce usando la regla 20 ($@2)
+
+    $@2  ir al estado 29
+
+
+estado 19
+
+   19 impresion: IMPR CONSCAD . $@1 PYC
+
+    $default  reduce usando la regla 18 ($@1)
+
+    $@1  ir al estado 30
+
+
+estado 20
+
+   23 lectura: LEER ID . $@3 PYC
+
+    $default  reduce usando la regla 22 ($@3)
+
+    $@3  ir al estado 31
+
+
+estado 21
+
+   39 mientras: WHILE PARA . condiciones PARC LLAVA programa LLAVC
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+    NOT       desplazar e ir al estado 39
+
+    expresion    ir al estado 40
+    termino      ir al estado 41
+    factor       ir al estado 42
+    condiciones  ir al estado 43
+    condicion    ir al estado 44
+    maximo       ir al estado 45
+
+
+estado 22
+
+   57 decision: SI PARA . condiciones PARC sentencia
+   58         | SI PARA . condiciones PARC LLAVA programa LLAVC
+   59         | SI PARA . condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+    NOT       desplazar e ir al estado 39
+
+    expresion    ir al estado 40
+    termino      ir al estado 41
+    factor       ir al estado 42
+    condiciones  ir al estado 46
+    condicion    ir al estado 44
+    maximo       ir al estado 45
+
+
+estado 23
+
+    0 $accept: programaPrima $end .
+
+    $default  aceptar
+
+
+estado 24
+
+    3 programa: programa sentencia .
+
+    $default  reduce usando la regla 3 (programa)
+
+
+estado 25
+
+   25 asignacion: ID $@4 ASIG . expresion PYC
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 47
+    termino    ir al estado 41
+    factor     ir al estado 42
+    maximo     ir al estado 45
+
+
+estado 26
+
+   13 variable: ID .
+
+    $default  reduce usando la regla 13 (variable)
+
+
+estado 27
+
+   10 declaracion: DECVAR CORCA variables . CORCC DEFTIPO CORCA tipos CORCC
+   11 variables: variables . COMA variable
+
+    COMA   desplazar e ir al estado 48
+    CORCC  desplazar e ir al estado 49
+
+
+estado 28
+
+   12 variables: variable .
+
+    $default  reduce usando la regla 12 (variables)
+
+
+estado 29
+
+   21 impresion: IMPR ID $@2 . PYC
+
+    PYC  desplazar e ir al estado 50
+
+
+estado 30
+
+   19 impresion: IMPR CONSCAD $@1 . PYC
+
+    PYC  desplazar e ir al estado 51
+
+
+estado 31
+
+   23 lectura: LEER ID $@3 . PYC
+
+    PYC  desplazar e ir al estado 52
+
+
+estado 32
+
+   54 maximo: FNMAX . PARA parametros PARC
+
+    PARA  desplazar e ir al estado 53
+
+
+estado 33
+
+   33 factor: ID .
+
+    $default  reduce usando la regla 33 (factor)
+
+
+estado 34
+
+   34 factor: CONSENT .
+
+    $default  reduce usando la regla 34 (factor)
+
+
+estado 35
+
+   35 factor: CONSREAL .
+
+    $default  reduce usando la regla 35 (factor)
+
+
+estado 36
+
+   36 factor: CONSHEXA .
+
+    $default  reduce usando la regla 36 (factor)
+
+
+estado 37
+
+   37 factor: CONSBIN .
+
+    $default  reduce usando la regla 37 (factor)
+
+
+estado 38
+
+   32 factor: PARA . expresion PARC
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 54
+    termino    ir al estado 41
+    factor     ir al estado 42
+    maximo     ir al estado 45
+
+
+estado 39
+
+   42 condiciones: NOT . condicion
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 40
+    termino    ir al estado 41
+    factor     ir al estado 42
+    condicion  ir al estado 55
+    maximo     ir al estado 45
+
+
+estado 40
+
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+   46 condicion: expresion . $@5 condicional $@6 expresion
+   47          | expresion .
+
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+
+    PARC      reduce usando la regla 47 (condicion)
+    Y         reduce usando la regla 47 (condicion)
+    O         reduce usando la regla 47 (condicion)
+    $default  reduce usando la regla 44 ($@5)
+
+    $@5  ir al estado 58
+
+
+estado 41
+
+   28 expresion: termino .
+   29 termino: termino . MULT factor
+   30        | termino . DIV factor
+
+    DIV   desplazar e ir al estado 59
+    MULT  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 28 (expresion)
+
+
+estado 42
+
+   31 termino: factor .
+
+    $default  reduce usando la regla 31 (termino)
+
+
+estado 43
+
+   39 mientras: WHILE PARA condiciones . PARC LLAVA programa LLAVC
+   40 condiciones: condiciones . Y condicion
+   41            | condiciones . O condicion
+
+    PARC  desplazar e ir al estado 61
+    Y     desplazar e ir al estado 62
+    O     desplazar e ir al estado 63
+
+
+estado 44
+
+   43 condiciones: condicion .
+
+    $default  reduce usando la regla 43 (condiciones)
+
+
+estado 45
+
+   38 factor: maximo .
+
+    $default  reduce usando la regla 38 (factor)
+
+
+estado 46
+
+   40 condiciones: condiciones . Y condicion
+   41            | condiciones . O condicion
+   57 decision: SI PARA condiciones . PARC sentencia
+   58         | SI PARA condiciones . PARC LLAVA programa LLAVC
+   59         | SI PARA condiciones . PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC
+
+    PARC  desplazar e ir al estado 64
+    Y     desplazar e ir al estado 62
+    O     desplazar e ir al estado 63
+
+
+estado 47
+
+   25 asignacion: ID $@4 ASIG expresion . PYC
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+
+    PYC    desplazar e ir al estado 65
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+
+
+estado 48
+
+   11 variables: variables COMA . variable
+
+    ID  desplazar e ir al estado 26
+
+    variable  ir al estado 66
+
+
+estado 49
+
+   10 declaracion: DECVAR CORCA variables CORCC . DEFTIPO CORCA tipos CORCC
+
+    DEFTIPO  desplazar e ir al estado 67
+
+
+estado 50
+
+   21 impresion: IMPR ID $@2 PYC .
+
+    $default  reduce usando la regla 21 (impresion)
+
+
+estado 51
+
+   19 impresion: IMPR CONSCAD $@1 PYC .
+
+    $default  reduce usando la regla 19 (impresion)
+
+
+estado 52
+
+   23 lectura: LEER ID $@3 PYC .
+
+    $default  reduce usando la regla 23 (lectura)
+
+
+estado 53
+
+   54 maximo: FNMAX PARA . parametros PARC
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion   ir al estado 68
+    termino     ir al estado 41
+    factor      ir al estado 42
+    maximo      ir al estado 45
+    parametros  ir al estado 69
+
+
+estado 54
+
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+   32 factor: PARA expresion . PARC
+
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+    PARC   desplazar e ir al estado 70
+
+
+estado 55
+
+   42 condiciones: NOT condicion .
+
+    $default  reduce usando la regla 42 (condiciones)
+
+
+estado 56
+
+   26 expresion: expresion SUMA . termino
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    termino  ir al estado 71
+    factor   ir al estado 42
+    maximo   ir al estado 45
+
+
+estado 57
+
+   27 expresion: expresion MENOS . termino
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    termino  ir al estado 72
+    factor   ir al estado 42
+    maximo   ir al estado 45
+
+
+estado 58
+
+   46 condicion: expresion $@5 . condicional $@6 expresion
+
+    CORCA  desplazar e ir al estado 73
+    CORCC  desplazar e ir al estado 74
+    DIST   desplazar e ir al estado 75
+    MENIG  desplazar e ir al estado 76
+    MAYIG  desplazar e ir al estado 77
+    IG     desplazar e ir al estado 78
+
+    condicional  ir al estado 79
+
+
+estado 59
+
+   30 termino: termino DIV . factor
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    factor  ir al estado 80
+    maximo  ir al estado 45
+
+
+estado 60
+
+   29 termino: termino MULT . factor
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    factor  ir al estado 81
+    maximo  ir al estado 45
+
+
+estado 61
+
+   39 mientras: WHILE PARA condiciones PARC . LLAVA programa LLAVC
+
+    LLAVA  desplazar e ir al estado 82
+
+
+estado 62
+
+   40 condiciones: condiciones Y . condicion
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 40
+    termino    ir al estado 41
+    factor     ir al estado 42
+    condicion  ir al estado 83
+    maximo     ir al estado 45
+
+
+estado 63
+
+   41 condiciones: condiciones O . condicion
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 40
+    termino    ir al estado 41
+    factor     ir al estado 42
+    condicion  ir al estado 84
+    maximo     ir al estado 45
+
+
+estado 64
+
+   57 decision: SI PARA condiciones PARC . sentencia
+   58         | SI PARA condiciones PARC . LLAVA programa LLAVC
+   59         | SI PARA condiciones PARC . LLAVA programa LLAVC SINO LLAVA programa LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+    LLAVA   desplazar e ir al estado 85
+
+    sentencia    ir al estado 86
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 65
+
+   25 asignacion: ID $@4 ASIG expresion PYC .
+
+    $default  reduce usando la regla 25 (asignacion)
+
+
+estado 66
+
+   11 variables: variables COMA variable .
+
+    $default  reduce usando la regla 11 (variables)
+
+
+estado 67
+
+   10 declaracion: DECVAR CORCA variables CORCC DEFTIPO . CORCA tipos CORCC
+
+    CORCA  desplazar e ir al estado 87
+
+
+estado 68
+
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+   56 parametros: expresion .
+
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+
+    $default  reduce usando la regla 56 (parametros)
+
+
+estado 69
+
+   54 maximo: FNMAX PARA parametros . PARC
+   55 parametros: parametros . COMA expresion
+
+    COMA  desplazar e ir al estado 88
+    PARC  desplazar e ir al estado 89
+
+
+estado 70
+
+   32 factor: PARA expresion PARC .
+
+    $default  reduce usando la regla 32 (factor)
+
+
+estado 71
+
+   26 expresion: expresion SUMA termino .
+   29 termino: termino . MULT factor
+   30        | termino . DIV factor
+
+    DIV   desplazar e ir al estado 59
+    MULT  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 26 (expresion)
+
+
+estado 72
+
+   27 expresion: expresion MENOS termino .
+   29 termino: termino . MULT factor
+   30        | termino . DIV factor
+
+    DIV   desplazar e ir al estado 59
+    MULT  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 27 (expresion)
+
+
+estado 73
+
+   48 condicional: CORCA .
+
+    $default  reduce usando la regla 48 (condicional)
+
+
+estado 74
+
+   49 condicional: CORCC .
+
+    $default  reduce usando la regla 49 (condicional)
+
+
+estado 75
+
+   50 condicional: DIST .
+
+    $default  reduce usando la regla 50 (condicional)
+
+
+estado 76
+
+   51 condicional: MENIG .
+
+    $default  reduce usando la regla 51 (condicional)
+
+
+estado 77
+
+   52 condicional: MAYIG .
+
+    $default  reduce usando la regla 52 (condicional)
+
+
+estado 78
+
+   53 condicional: IG .
+
+    $default  reduce usando la regla 53 (condicional)
+
+
+estado 79
+
+   46 condicion: expresion $@5 condicional . $@6 expresion
+
+    $default  reduce usando la regla 45 ($@6)
+
+    $@6  ir al estado 90
+
+
+estado 80
+
+   30 termino: termino DIV factor .
+
+    $default  reduce usando la regla 30 (termino)
+
+
+estado 81
+
+   29 termino: termino MULT factor .
+
+    $default  reduce usando la regla 29 (termino)
+
+
+estado 82
+
+   39 mientras: WHILE PARA condiciones PARC LLAVA . programa LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+
+    programa     ir al estado 91
+    sentencia    ir al estado 9
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 83
+
+   40 condiciones: condiciones Y condicion .
+
+    $default  reduce usando la regla 40 (condiciones)
+
+
+estado 84
+
+   41 condiciones: condiciones O condicion .
+
+    $default  reduce usando la regla 41 (condiciones)
+
+
+estado 85
+
+   58 decision: SI PARA condiciones PARC LLAVA . programa LLAVC
+   59         | SI PARA condiciones PARC LLAVA . programa LLAVC SINO LLAVA programa LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+
+    programa     ir al estado 92
+    sentencia    ir al estado 9
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 86
+
+   57 decision: SI PARA condiciones PARC sentencia .
+
+    $default  reduce usando la regla 57 (decision)
+
+
+estado 87
+
+   10 declaracion: DECVAR CORCA variables CORCC DEFTIPO CORCA . tipos CORCC
+
+    INTEGER  desplazar e ir al estado 93
+    FLOAT    desplazar e ir al estado 94
+
+    tipos  ir al estado 95
+    tipo   ir al estado 96
+
+
+estado 88
+
+   55 parametros: parametros COMA . expresion
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 97
+    termino    ir al estado 41
+    factor     ir al estado 42
+    maximo     ir al estado 45
+
+
+estado 89
+
+   54 maximo: FNMAX PARA parametros PARC .
+
+    $default  reduce usando la regla 54 (maximo)
+
+
+estado 90
+
+   46 condicion: expresion $@5 condicional $@6 . expresion
+
+    FNMAX     desplazar e ir al estado 32
+    ID        desplazar e ir al estado 33
+    CONSENT   desplazar e ir al estado 34
+    CONSREAL  desplazar e ir al estado 35
+    CONSHEXA  desplazar e ir al estado 36
+    CONSBIN   desplazar e ir al estado 37
+    PARA      desplazar e ir al estado 38
+
+    expresion  ir al estado 98
+    termino    ir al estado 41
+    factor     ir al estado 42
+    maximo     ir al estado 45
+
+
+estado 91
+
+    3 programa: programa . sentencia
+   39 mientras: WHILE PARA condiciones PARC LLAVA programa . LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+    LLAVC   desplazar e ir al estado 99
+
+    sentencia    ir al estado 24
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 92
+
+    3 programa: programa . sentencia
+   58 decision: SI PARA condiciones PARC LLAVA programa . LLAVC
+   59         | SI PARA condiciones PARC LLAVA programa . LLAVC SINO LLAVA programa LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+    LLAVC   desplazar e ir al estado 100
+
+    sentencia    ir al estado 24
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 93
+
+   16 tipo: INTEGER .
+
+    $default  reduce usando la regla 16 (tipo)
+
+
+estado 94
+
+   17 tipo: FLOAT .
+
+    $default  reduce usando la regla 17 (tipo)
+
+
+estado 95
+
+   10 declaracion: DECVAR CORCA variables CORCC DEFTIPO CORCA tipos . CORCC
+   14 tipos: tipos . COMA tipo
+
+    COMA   desplazar e ir al estado 101
+    CORCC  desplazar e ir al estado 102
+
+
+estado 96
+
+   15 tipos: tipo .
+
+    $default  reduce usando la regla 15 (tipos)
+
+
+estado 97
+
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+   55 parametros: parametros COMA expresion .
+
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+
+    $default  reduce usando la regla 55 (parametros)
+
+
+estado 98
+
+   26 expresion: expresion . SUMA termino
+   27          | expresion . MENOS termino
+   46 condicion: expresion $@5 condicional $@6 expresion .
+
+    SUMA   desplazar e ir al estado 56
+    MENOS  desplazar e ir al estado 57
+
+    $default  reduce usando la regla 46 (condicion)
+
+
+estado 99
+
+   39 mientras: WHILE PARA condiciones PARC LLAVA programa LLAVC .
+
+    $default  reduce usando la regla 39 (mientras)
+
+
+estado 100
+
+   58 decision: SI PARA condiciones PARC LLAVA programa LLAVC .
+   59         | SI PARA condiciones PARC LLAVA programa LLAVC . SINO LLAVA programa LLAVC
+
+    SINO  desplazar e ir al estado 103
+
+    $default  reduce usando la regla 58 (decision)
+
+
+estado 101
+
+   14 tipos: tipos COMA . tipo
+
+    INTEGER  desplazar e ir al estado 93
+    FLOAT    desplazar e ir al estado 94
+
+    tipo  ir al estado 104
+
+
+estado 102
+
+   10 declaracion: DECVAR CORCA variables CORCC DEFTIPO CORCA tipos CORCC .
+
+    $default  reduce usando la regla 10 (declaracion)
+
+
+estado 103
+
+   59 decision: SI PARA condiciones PARC LLAVA programa LLAVC SINO . LLAVA programa LLAVC
+
+    LLAVA  desplazar e ir al estado 105
+
+
+estado 104
+
+   14 tipos: tipos COMA tipo .
+
+    $default  reduce usando la regla 14 (tipos)
+
+
+estado 105
+
+   59 decision: SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA . programa LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+
+    programa     ir al estado 106
+    sentencia    ir al estado 9
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 106
+
+    3 programa: programa . sentencia
+   59 decision: SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa . LLAVC
+
+    ID      desplazar e ir al estado 1
+    DECVAR  desplazar e ir al estado 2
+    IMPR    desplazar e ir al estado 3
+    LEER    desplazar e ir al estado 4
+    WHILE   desplazar e ir al estado 5
+    SI      desplazar e ir al estado 6
+    LLAVC   desplazar e ir al estado 107
+
+    sentencia    ir al estado 24
+    declaracion  ir al estado 10
+    impresion    ir al estado 11
+    lectura      ir al estado 12
+    asignacion   ir al estado 13
+    mientras     ir al estado 14
+    decision     ir al estado 15
+
+
+estado 107
+
+   59 decision: SI PARA condiciones PARC LLAVA programa LLAVC SINO LLAVA programa LLAVC .
+
+    $default  reduce usando la regla 59 (decision)
