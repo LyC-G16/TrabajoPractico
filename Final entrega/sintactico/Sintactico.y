@@ -471,8 +471,8 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-int yyerror(char *mensaje)
+int yyerror(void)
 {
-  printf("%s", mensaje);
+  printf("Error sintáctico\n");
   exit(1);
 }
